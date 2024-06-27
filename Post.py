@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Title
-st.title("Bunchful Post")
+st.title("🩵 Bunchful Post")
 st.caption("Welcome to Bunchful Post! Manage your content here.")
 
 # Section 1: Content Curation
