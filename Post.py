@@ -18,9 +18,15 @@ topics = st.multiselect(
        ['1: No Poverty','17: Partnerships for the Goals'])
 
 # Content Type
-content_type = st.selectbox('Select your content type: ',
+content_type = st.selectbox(
+        'Select your content type: ',
         ('Blog', 'Newsletter', 'Social Meida Post'),
         index=0)
+
+# Initial Draft
+input_draft = st.text_area("Enter your Draft")
+# Printing entered text
+st.write("""You entered:  \n""",input_draft)
 
 
 # Sidebar
