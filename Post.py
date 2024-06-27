@@ -6,7 +6,7 @@ st.caption("Welcome to Bunchful Post! Manage your content here.")
 
 # Section 1: Content Curation
 st.subheader("Step1: Content Curation")
-st.write("Modify your content with the help of AI.")
+st.write("Customize your content with the help of AI.")
 # SDGs Topic Select 
 topics = st.multiselect(
        "Select your topic:",
@@ -29,7 +29,14 @@ st.write("""You entered:  \n""",input_draft)
 button_generate = st.button("Generate")
 # Mimic Generate Button Logic
 if button_generate:
-    st.write('You have clicked the Button')
+    st.write(
+        '''
+        Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
+        Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
+        
+        However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
+        '''
+    )
 
 
 # Sidebar
