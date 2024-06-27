@@ -16,17 +16,20 @@ topics = st.multiselect(
         '10: Reduced Inequalities', '11: Sustainable Cities and Communities', '12: Responsible Consumption and Production',
         '13: Climate Action', '14: Life Below Water', '15: Life on Land', '16: Peace, Justice, and Strong Institutions','17: Partnerships for the Goals'],
        ['1: No Poverty','17: Partnerships for the Goals'])
-
 # Content Type
 content_type = st.selectbox(
         'Select your content type: ',
         ('Blog', 'Newsletter', 'Social Meida Post'),
         index=0)
-
 # Initial Draft
 input_draft = st.text_area("Enter your Draft")
 # Printing entered text
 st.write("""You entered:  \n""",input_draft)
+# Generate Button
+button_generate = st.button("Generate")
+# Mimic Generate Button Logic
+if button_generate:
+    st.write('You have clicked the Button')
 
 
 # Sidebar
