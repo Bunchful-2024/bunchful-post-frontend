@@ -1,4 +1,6 @@
 import streamlit as st
+from openai import OpenAI
+clien = OpenAI()
 
 # Title
 st.title("🩵 Bunchful Post")
