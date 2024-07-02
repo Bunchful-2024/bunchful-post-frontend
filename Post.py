@@ -52,6 +52,8 @@ if button_generate:
             ]
         )
         st.write(generated_response.choices[0].message.content)
+    else:
+        st.write("Content type not supported yet.")
 
 
 # Sidebar for guidance
