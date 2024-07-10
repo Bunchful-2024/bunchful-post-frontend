@@ -42,20 +42,31 @@ st.write("""You entered:  \n""",input_draft)
 # Generate Button
 button_generate = st.button("Generate")
 
-# Mimic Generate Button Logic
+# Mimic Generate Button Logic/Put Gemini logic here
 if button_generate:
-    if content_type == 'Blog':
-        blog_prompt = prompts.generate_blog_prompt(topics, input_draft)
-        generated_response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": prompts.general_prompt()},
-                {"role": "user", "content": prompts.generate_blog_prompt(topics, input_draft)},
-            ]
-        )
-        st.write(generated_response.choices[0].message.content)
-    else:
-        st.write("Content type not supported yet.")
+    st.write(
+        '''
+        Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
+        Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
+        
+        However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
+        '''
+    )
+
+# original OpenAI API logic
+# if button_generate:
+#     if content_type == 'Blog':
+#         blog_prompt = prompts.generate_blog_prompt(topics, input_draft)
+#         generated_response = client.chat.completions.create(
+#             model="gpt-3.5-turbo",
+#             messages=[
+#                 {"role": "system", "content": prompts.general_prompt()},
+#                 {"role": "user", "content": prompts.generate_blog_prompt(topics, input_draft)},
+#             ]
+#         )
+#         st.write(generated_response.choices[0].message.content)
+#     else:
+#         st.write("Content type not supported yet.")
 
 
 # Sidebar for guidance
