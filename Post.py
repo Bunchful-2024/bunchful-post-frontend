@@ -36,9 +36,6 @@ content_type = st.selectbox(
 # Initial Draft
 input_draft = st.text_area("Enter your Draft")
 
-# Printing entered text
-st.write("""You entered:  \n""",input_draft)
-
 # Generate Button
 button_generate = st.button("Generate")
 
