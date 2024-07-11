@@ -30,14 +30,11 @@ topics = st.multiselect(
 # Content Type
 content_type = st.selectbox(
         'Select your content type: ',
-        ('Blog', 'Newsletter', 'Social Meida Post'),
+        ('LinkedIn Post','Facebook Post','Instagram Post','Medium Article','Tweet','Blog', 'Newsletter','Short Videos (TikTok, Reels)'),
         index=0)
 
 # Initial Draft
 input_draft = st.text_area("Enter your Draft")
-
-# Printing entered text
-st.write("""You entered:  \n""",input_draft)
 
 # Generate Button
 button_generate = st.button("Generate")
