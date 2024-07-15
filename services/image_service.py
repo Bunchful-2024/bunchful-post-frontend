@@ -15,7 +15,7 @@ class PexelsAPI:
 
         if response.status_code == 200:
             data = response.json()
-            return[photo['url'] for photo in data['photos']]
+            return[photo['src']['original'] for photo in data['photos']]
         else:
             print("Failed to fetch the images", response.status_code)
             return []

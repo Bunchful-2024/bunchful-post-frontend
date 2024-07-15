@@ -1,14 +1,14 @@
 import os
 import streamlit as st
 import services.prompts as prompts
+import services.image_service
 from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-)
-pexels_api = Pexels
+#API key set up
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),)
+pexels_api = services.image_service.PexelsAPI(os.environ.get("PEXELS_API_KEY"))
 
 # Title
 st.title("🩵 Bunchful Post")
@@ -52,6 +52,9 @@ if button_generate:
         '''
     )
     st.markdown("#### Image")
+    image_result = pexels_api.search_image(' '.join(topics),1)[0]
+    st.write(image_result)
+    st.image(image_result, caption='Image from Pexels', use_column_width=True)
 
 # original OpenAI API logic
 # if button_generate:
