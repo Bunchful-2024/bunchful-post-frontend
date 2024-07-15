@@ -41,6 +41,7 @@ button_generate = st.button("Generate")
 
 # Mimic Generate Button Logic/Put Gemini logic here
 if button_generate:
+    st.markdown("#### Content")
     st.write(
         '''
         Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
@@ -49,6 +50,7 @@ if button_generate:
         However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
         '''
     )
+    st.markdown("#### Image")
 
 # original OpenAI API logic
 # if button_generate:
