@@ -3,7 +3,7 @@
 
 import requests
 
-class PixelsAPI:
+class PexelsAPI:
     def __init__(self, api_key):
         self.api_key = api_key
         self.base_url = "https://api.pexels.com/v1/"
