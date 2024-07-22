@@ -1,5 +1,7 @@
 #predefined prompts for openai api to use from
 
+#migrate the predefined prompt into excel files
+
 def general_prompt():
     return """
     You are a professional blog writer about UN SDGs.  
