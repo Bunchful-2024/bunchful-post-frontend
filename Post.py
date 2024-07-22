@@ -26,6 +26,10 @@ topics = st.multiselect(
         '10: Reduced Inequalities', '11: Sustainable Cities and Communities', '12: Responsible Consumption and Production',
         '13: Climate Action', '14: Life Below Water', '15: Life on Land', '16: Peace, Justice, and Strong Institutions','17: Partnerships for the Goals'],
        ['1: No Poverty','17: Partnerships for the Goals'], max_selections=2)
+
+# Initial Keywords
+input_draft = st.text_area("Enter your keywords:")
+
 st.divider()
 # Content Type
 st.write("Select your Content Type:")
@@ -49,9 +53,6 @@ with col3:
 #         ('LinkedIn Post','Facebook Post','Instagram Post','Medium Article','Tweet','Blog', 'Newsletter','Short Videos (TikTok, Reels)'),
 #         index=0)
 
-
-# Initial Draft
-input_draft = st.text_area("Enter your Draft")
 
 # Generate Button
 button_generate = st.button("Generate")
