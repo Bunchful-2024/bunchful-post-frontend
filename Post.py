@@ -28,7 +28,7 @@ topics = st.multiselect(
        ['1: No Poverty','17: Partnerships for the Goals'], max_selections=2)
 
 # Initial Keywords
-input_draft = st.text_area("Enter your keywords:")
+input_draft = st.text_area("Enter your keywords (seperate with commas):")
 
 st.divider()
 # Content Type
