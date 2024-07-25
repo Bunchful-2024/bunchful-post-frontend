@@ -17,20 +17,11 @@ st.caption("Welcome to Bunchful Post! Manage your content here.")
 st.subheader("Step1: Content Curation")
 st.write("Customize your content with the help of AI.")
 
-# SDGs Topic Select 
-topics = st.multiselect(
-       "Select your topic:",
-       ['1: No Poverty', '2: Zero Hunger', '3: Good Health and Well-Being', '4: Quality Education',
-        '5: Gender Equality', '6: Clean Water and Sanitation', '7: Affordable and Clean Energy',
-        '8: Decent Work and Economic Growth', '9: Industry, Innovation, and Infrastructure',
-        '10: Reduced Inequalities', '11: Sustainable Cities and Communities', '12: Responsible Consumption and Production',
-        '13: Climate Action', '14: Life Below Water', '15: Life on Land', '16: Peace, Justice, and Strong Institutions','17: Partnerships for the Goals'],
-       ['1: No Poverty','17: Partnerships for the Goals'], max_selections=2)
-
-# Initial Keywords
-input_draft = st.text_area("Enter your keywords (seperate with commas):")
+# Text area for entering the topic/keyword
+topic = st.text_area("Enter your Topic/Keyword")
 
 st.divider()
+
 # Content Type
 st.write("Select your Content Type:")
 
@@ -38,20 +29,21 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
    facebook = st.checkbox('Facebook Post')
-   medium = st.checkbox('Medium Article')
+   medium = st.checkbox('LinkedIn Post')
 
 with col2:
    instagram = st.checkbox('Instagram Post')
-   tweet = st.checkbox('Tweet')
+   tweet = st.checkbox('X(Tweet)')
 
 with col3:
-   linkedin = st.checkbox('LinkedIn Post')
+   linkedin = st.checkbox('Instagram Threads')
    all = st.checkbox('All')
 
-# content_type = st.selectbox(
-#         'Select your content type: ',
-#         ('LinkedIn Post','Facebook Post','Instagram Post','Medium Article','Tweet','Blog', 'Newsletter','Short Videos (TikTok, Reels)'),
-#         index=0)
+# # Platfrom select
+# platforms = st.multiselect(
+#     "Select your platform:",
+#     ['LinkedIn', 'Instagram', 'Facebook', 'X', 'Instagram Thread']
+# )
 
 
 # Generate Button
