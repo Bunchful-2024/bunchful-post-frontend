@@ -36,12 +36,14 @@ Article Attributes. Bullet these:
 -        number of backlinks
 -        Brand mention
 -        sentiment
-Show the Estimated Cost per article below with a sepeartion line considering the input and output tokens.
-Writer AI Cost projection per article
-Total Output Token Count=  prompt_char_count + generated_char_count
-Input per token price: 7.50/1,000,000 = 0.0000075 per token
-Output per token price: 22.50/1,000,000=0.0000225 per token
-Cost of article: (Total Output Token Count * $30.00) / 1,000,000
 
     """
    
+
+# migrate the cost estimation logic to the main file
+# Show the Estimated Cost per article below with a sepeartion line considering the input and output tokens.
+# Writer AI Cost projection per article
+# Total Output Token Count=  prompt_char_count + generated_char_count
+# Input per token price: 7.50/1,000,000 = 0.0000075 per token
+# Output per token price: 22.50/1,000,000=0.0000225 per token
+# Cost of article: (Total Output Token Count * $30.00) / 1,000,000

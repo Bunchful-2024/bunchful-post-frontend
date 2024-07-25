@@ -69,11 +69,19 @@ if generate_button:
         # Calculate character count for generated content
         generated_char_count = len(generated_text)
 
-        # Display estimated token count and character counts
-        st.write(f"Estimated Prompt Token Count: {prompt_tokens}")
+        # Display estimated token count, estimated cost, and character counts
+        st.markdown("### Writer AI Cost projection per article")
         st.write(f"Prompt Character Count: {prompt_char_count}")
         st.write(f"Generated Content Character Count: {generated_char_count}")
-
+        input_tokens = response.usage_metadata.prompt_token_count
+        output_tokens = response.usage_metadata.candidates_token_count
+        st.write(f"Input tokens: {input_tokens}") #input token count
+        st.write(f"Output tokens: {output_tokens}") #output token count
+        # Input per token price: 7.50/1,000,000 = 0.0000075 per token
+        # Output per token price: 22.50/1,000,000=0.0000225 per token
+        token_cost = input_tokens*0.0000075+output_tokens*0.0000225
+        st.write(f"Estimated cost: {token_cost}") 
+        
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
     except Exception as e:
