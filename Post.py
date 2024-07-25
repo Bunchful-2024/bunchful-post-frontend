@@ -82,10 +82,7 @@ st.sidebar.caption("Tips for using the tool.")
 st.sidebar.markdown("""
 ## Step 1. Content Curation
 This section allows you to customize your content with the help of AI.
-   - Select the SDG topics you want to write for. You can select multiple topics.
-   - Select your content type based on the target plaftorm needs.
-   - Enter your initial draft in the text area.
-   - Click the 'Generate' button to generate the content.
-   - After you're satisfied with the content, click the 'Save' button to save your work.
-   - You can also export your content by clicking the 'Export' button.
+    - Select the Platform you want to write for. You can select multiple platforms.
+    - Enter your Topic in the text area.
+    - Click the 'Generate' button to generate the content.
 """)
