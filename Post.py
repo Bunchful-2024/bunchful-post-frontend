@@ -28,8 +28,11 @@ platforms = st.multiselect(
 # Text area for entering the topic/keyword
 topic = st.text_area("Enter your Topic/Keyword")
 
+#Generate button
+generate_button = st.button("Generate")
+
 # Generate button
-if st.button("Generate"):
+if generate_button:
     try:
         # Join the selected platforms into a single string
         platforms_str = ", ".join(platforms)
