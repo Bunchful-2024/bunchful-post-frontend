@@ -1,43 +1,80 @@
+import os
 import streamlit as st
+from services.prompts import general_prompt  
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+genai.configure(api_key=os.getenv("API_KEY"))
+
+model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Title
 st.title("🩵 Bunchful Post")
 st.caption("Welcome to Bunchful Post! Manage your content here.")
 
 # Section 1: Content Curation
-st.subheader("Step1: Content Curation")
+st.subheader("Step 1: Content Curation")
 st.write("Customize your content with the help of AI.")
-# SDGs Topic Select 
-topics = st.multiselect(
-       "Select your topic:",
-       ['1: No Poverty', '2: Zero Hunger', '3: Good Health and Well-Being', '4: Quality Education',
-        '5: Gender Equality', '6: Clean Water and Sanitation', '7: Affordable and Clean Energy',
-        '8: Decent Work and Economic Growth', '9: Industry, Innovation, and Infrastructure',
-        '10: Reduced Inequalities', '11: Sustainable Cities and Communities', '12: Responsible Consumption and Production',
-        '13: Climate Action', '14: Life Below Water', '15: Life on Land', '16: Peace, Justice, and Strong Institutions','17: Partnerships for the Goals'],
-       ['1: No Poverty','17: Partnerships for the Goals'])
-# Content Type
-content_type = st.selectbox(
-        'Select your content type: ',
-        ('Blog', 'Newsletter', 'Social Meida Post'),
-        index=0)
-# Initial Draft
-input_draft = st.text_area("Enter your Draft")
-# Printing entered text
-st.write("""You entered:  \n""",input_draft)
-# Generate Button
-button_generate = st.button("Generate")
-# Mimic Generate Button Logic
-if button_generate:
-    st.write(
-        '''
-        Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
-        Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
-        
-        However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
-        '''
-    )
 
+# SDGs Topic Select
+platforms = st.multiselect(
+    "Select your topic:",
+    ['LinkedIn', 'Instagram', 'Facebook', 'X', 'Instagram Thread']
+)
+
+# Text area for entering the topic/keyword
+topic = st.text_area("Enter your Topic/Keyword")
+
+# Generate button
+if st.button("Generate"):
+    try:
+        # Join the selected platforms into a single string
+        platforms_str = ", ".join(platforms)
+
+        # Retrieve the predefined prompt and replace placeholders
+        prompt_template = general_prompt()
+        prompt = prompt_template.format(
+            platform=platforms_str,
+            Topic=topic,
+            LinkedIn_Character_Limit=2000,
+            Facebook_Character_Limit=1500,
+            Instagram_Character_Limit=1300,
+            Twitter_Character_Limit=280,
+            Threads_Character_Limit=280
+        )
+
+        # Calculate estimated token count (assuming split on whitespace)
+        prompt_tokens = len(prompt.split())
+
+        # Calculate character count for prompt
+        prompt_char_count = len(prompt)
+
+        # Generate content using the model instance
+        response = model.generate_content(prompt)
+
+        # Print the response to understand its structure
+        st.write("Response object:", response)
+
+        # Accessing the content from the response object
+        generated_text = response.text
+        st.write("Generated Content:")
+        st.write(generated_text)
+
+        # Calculate character count for generated content
+        generated_char_count = len(generated_text)
+
+        # Display estimated token count and character counts
+        st.write(f"Estimated Prompt Token Count: {prompt_tokens}")
+        st.write(f"Prompt Character Count: {prompt_char_count}")
+        st.write(f"Generated Content Character Count: {generated_char_count}")
+
+    except AttributeError as e:
+        st.error(f"An attribute error occurred: {e}")
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
 
 # Sidebar for guidance
 st.sidebar.title("Need Help?")
@@ -45,10 +82,7 @@ st.sidebar.caption("Tips for using the tool.")
 st.sidebar.markdown("""
 ## Step 1. Content Curation
 This section allows you to customize your content with the help of AI.
-   - Select the SDG topics you want to write for. You can select multiple topics.
-   - Select your content type based on the target plaftorm needs.
-   - Enter your initial draft in the text area.
-   - Click the 'Generate' button to generate the content.
-   - After you're satisfied with the content, click the 'Save' button to save your work.
-   - You can also export your content by clicking the 'Export' button.
+  - Select the Platform you want to write for. You can select multiple topics.
+  - Enter your Topic in the text area.
+  - Click the 'Generate' button to generate the content.
 """)
