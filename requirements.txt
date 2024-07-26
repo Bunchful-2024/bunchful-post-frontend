@@ -13,7 +13,6 @@ click==8.1.7
 curlify==2.2.1
 distro==1.9.0
 exceptiongroup==1.2.2
-facebook-sdk==3.1.0
 frozenlist==1.4.1
 gitdb==4.0.11
 GitPython==3.1.43
