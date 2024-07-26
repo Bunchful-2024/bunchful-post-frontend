@@ -25,25 +25,26 @@ st.divider()
 # Content Type
 st.write("Select your Content Type:")
 
-col1, col2, col3 = st.columns(3)
+# simplize for this branch
+# col1, col2, col3 = st.columns(3)
 
-with col1:
-   facebook = st.checkbox('Facebook Post')
-   medium = st.checkbox('LinkedIn Post')
+# with col1:
+#    facebook = st.checkbox('Facebook Post')
+#    medium = st.checkbox('LinkedIn Post')
 
-with col2:
-   instagram = st.checkbox('Instagram Post')
-   tweet = st.checkbox('X (Tweet)')
+# with col2:
+#    instagram = st.checkbox('Instagram Post')
+#    tweet = st.checkbox('X (Tweet)')
 
-with col3:
-   linkedin = st.checkbox('Instagram Threads')
-   all = st.checkbox('All')
+# with col3:
+#    linkedin = st.checkbox('Instagram Threads')
+#    all = st.checkbox('All')
 
-# # Platfrom select
-# platforms = st.multiselect(
-#     "Select your platform:",
-#     ['LinkedIn', 'Instagram', 'Facebook', 'X', 'Instagram Thread']
-# )
+# Platfrom select
+platforms = st.selectbox(
+    "Select your platform:",
+    ['LinkedIn', 'Instagram', 'Facebook', 'X', 'Instagram Thread']
+)
 
 
 # Generate Button
