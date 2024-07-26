@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+import requests
 import services.prompts as prompts
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -58,7 +59,11 @@ generated_text = '''
     However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
 '''
 if button_generate:
-    st.write(generated_text)
+    if platforms == 'Facebook':
+        st.markdown("#### Facebook Post:")
+        st.write(generated_text)
+
+        publish_button = st.button("Publish")
 
 # original OpenAI API logic
 # if button_generate:
