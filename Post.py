@@ -14,6 +14,11 @@ client = OpenAI(
 # Access environment variables
 fb_page_id = os.environ.get('FB_PAGE_ID')
 fb_access_token = os.environ.get('FB_PAGE_ACCESS_TOKEN')
+fb_access_token = str(fb_access_token)
+
+# Initialize session state for generated text
+if 'generated_text' not in st.session_state:
+    st.session_state.generated_text = ''
 
 # Title
 st.title("🩵 Bunchful Post")
@@ -57,16 +62,17 @@ platforms = st.selectbox(
 button_generate = st.button("Generate")
 
 # Mimic Generate Button Logic/Put Gemini logic here
-generated_text = '''
-Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
-Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
-        
-However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
-'''
 if button_generate:
+    st.session_state.generated_text = '''
+    Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
+    Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
+            
+    However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
+    '''
+if st.session_state.generated_text:
     if platforms == 'Facebook':
         st.markdown("#### Facebook Post:")
-        st.write(generated_text)
+        st.write(st.session_state.generated_text)
 
         publish_button = st.button("Publish")
         #publish content to FB page
@@ -75,8 +81,9 @@ if button_generate:
             fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
 
             payload = {
-                'message': generated_text,
-                'access_token': fb_access_token
+                'message': st.session_state.generated_text,
+                'access_token': "EAAHJqTXE0P4BOZCvZCC2iwbOOOrtsBDPbjyhgVQlfrtrkGFLLYp1eODOikZAP4aS3ZCzBsVkAdEESCbMJjS4WH4df97XOYncRqB6XD7DDpEbWmI8RnAB98OFP0Nl8OZB8ZBAeMpLUwHBdlCa75gmgavpouyCXA1cSwJstbGpZBAj62jtxBqPDoi67aJwLWyNbnBNE70ZBCIUwI2trZBxOVEZBfEhDZBNPtTakKpPtAKbCEZD",
+                # 'access_token': fb_access_token cannot work why
             }
             headers = {
                 'Content-Type': 'application/json'
@@ -87,12 +94,12 @@ if button_generate:
             st.write("Payload:", payload)
             st.write("Headers:", headers)
 
-            response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+            # response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
 
-            if response.status_code == 200:
-                st.success("Post published successfully on Facebook!")
-            else:
-                st.error(f"Failed to publish post: {response.text}")
+            # if response.status_code == 200:
+            #     st.success("Post published successfully on Facebook!")
+            # else:
+            #     st.error(f"Failed to publish post: {response.text}")
 
 # original OpenAI API logic
 # if button_generate:
