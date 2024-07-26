@@ -17,38 +17,47 @@ st.caption("Welcome to Bunchful Post! Manage your content here.")
 st.subheader("Step1: Content Curation")
 st.write("Customize your content with the help of AI.")
 
-# SDGs Topic Select 
-topics = st.multiselect(
-       "Select your topic:",
-       ['1: No Poverty', '2: Zero Hunger', '3: Good Health and Well-Being', '4: Quality Education',
-        '5: Gender Equality', '6: Clean Water and Sanitation', '7: Affordable and Clean Energy',
-        '8: Decent Work and Economic Growth', '9: Industry, Innovation, and Infrastructure',
-        '10: Reduced Inequalities', '11: Sustainable Cities and Communities', '12: Responsible Consumption and Production',
-        '13: Climate Action', '14: Life Below Water', '15: Life on Land', '16: Peace, Justice, and Strong Institutions','17: Partnerships for the Goals'],
-       ['1: No Poverty','17: Partnerships for the Goals'])
+# Text area for entering the topic/keyword
+topic = st.text_area("Enter your Topic/Keyword")
+
+st.divider()
 
 # Content Type
-content_type = st.selectbox(
-        'Select your content type: ',
-        ('LinkedIn Post','Facebook Post','Instagram Post','Medium Article','Tweet','Blog', 'Newsletter','Short Videos (TikTok, Reels)'),
-        index=0)
+st.write("Select your Content Type:")
 
-# Initial Draft
-input_draft = st.text_area("Enter your Draft")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+   facebook = st.checkbox('Facebook Post')
+   medium = st.checkbox('LinkedIn Post')
+
+with col2:
+   instagram = st.checkbox('Instagram Post')
+   tweet = st.checkbox('X (Tweet)')
+
+with col3:
+   linkedin = st.checkbox('Instagram Threads')
+   all = st.checkbox('All')
+
+# # Platfrom select
+# platforms = st.multiselect(
+#     "Select your platform:",
+#     ['LinkedIn', 'Instagram', 'Facebook', 'X', 'Instagram Thread']
+# )
+
 
 # Generate Button
 button_generate = st.button("Generate")
 
 # Mimic Generate Button Logic/Put Gemini logic here
-if button_generate:
-    st.write(
-        '''
-        Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
-        Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
+generated_text = '''
+    Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
+    Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
         
-        However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
-        '''
-    )
+    However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
+'''
+if button_generate:
+    st.write(generated_text)
 
 # original OpenAI API logic
 # if button_generate:
@@ -72,10 +81,7 @@ st.sidebar.caption("Tips for using the tool.")
 st.sidebar.markdown("""
 ## Step 1. Content Curation
 This section allows you to customize your content with the help of AI.
-   - Select the SDG topics you want to write for. You can select multiple topics.
-   - Select your content type based on the target plaftorm needs.
-   - Enter your initial draft in the text area.
-   - Click the 'Generate' button to generate the content.
-   - After you're satisfied with the content, click the 'Save' button to save your work.
-   - You can also export your content by clicking the 'Export' button.
+- Select the Platform you want to write for. You can select multiple platforms.
+- Enter your Topic in the text area.
+- Click the 'Generate' button to generate the content.
 """)
