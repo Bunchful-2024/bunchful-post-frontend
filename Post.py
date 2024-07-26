@@ -33,7 +33,7 @@ with col1:
 
 with col2:
    instagram = st.checkbox('Instagram Post')
-   tweet = st.checkbox('X(Tweet)')
+   tweet = st.checkbox('X (Tweet)')
 
 with col3:
    linkedin = st.checkbox('Instagram Threads')
