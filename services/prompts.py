@@ -1,13 +1,9 @@
 #predefined prompts for Gemini to use from
 
-def general_prompt():
-    return """
-Create a {platform} post highlighting the significance of {Topic}. Use primary keywords in italics, with a keyword density of less than 2% (i.e., less than twice per 100 words). Write in an engaging, conversational style using idioms and varied sentence structures, incorporating over 30% transition words for readability. Start with a compelling introduction related to {Topic} and use clear headings or bullet points if needed. Include a link to a relevant resource or further reading and ensure the post length adheres to the recommended character count for optimal engagement:
-LinkedIn: {LinkedIn_Character_Limit}
-Facebook: {Facebook_Character_Limit}
-Instagram: {Instagram_Character_Limit}
-X (Twitter): {Twitter_Character_Limit}
-Instagram Threads: {Threads_Character_Limit}
+def general_prompt(platform, character_limit):
+    return f"""
+Create a {platform} post highlighting the significance of {{Topic}}. Use primary keywords in italics, with a keyword density of less than 2% (i.e., less than twice per 100 words). Write in an engaging, conversational style using idioms and varied sentence structures, incorporating over 30% transition words for readability. Start with a compelling introduction related to {{Topic}} and use clear headings or bullet points if needed. Include a link to a relevant resource or further reading and ensure the post length adheres to the recommended character count for optimal engagement:
+{platform}: {character_limit}
 Add a clear CTA to encourage interaction, such as asking readers to comment, share, or follow a link. Pose a question at the end to prompt discussion. Use relevant images or media with descriptive alt text to enhance visual appeal, and strategically use hashtags such as #BeBunchful, #BunchfulSDGs, #GivingBack, #SocialImpact, #BunchfulAtlas, #BunchfulEvents, #BunchfulNews, #NewYork, #UNSDGs, #Philanthropy to increase the post’s reach and engagement.
 Mention and tag relevant organizations or individuals to increase visibility and interaction. Proofread the content to ensure it is free of grammatical errors and readability.
 Please generate text that avoids using formal or overly academic phrases such as 'it is worth noting,' 'furthermore,' 'consequently,' 'in terms of,' 'one may argue,' 'it is imperative,' 'this suggests that,' 'thus,' 'it is evident that,' 'notwithstanding,' 'pertaining to,' 'therein lies,' 'utilize,' 'be advised,' 'hence,' 'indicate,' 'facilitate,' 'subsequently,' 'moreover,' and 'it can be seen that.' Aim for a natural, conversational style that sounds like two friends talking at the coffee shop. Use direct, simple language and choose phrases that are commonly used in everyday speech. If a formal phrase is necessary for clarity or accuracy, you may include it, but otherwise, please prioritize making the text engaging, clear, and relatable.
@@ -25,25 +21,57 @@ Show 7 optimal posting days and times with EST time zone based on the highest en
 Make the Content 95 percent or greator human genereated.
 Show the below attributes with the separation line.
 Article Attributes. Bullet these:
--        read time
--        Token input token count
--        Total Output Token Count 
-            - cost of article 
--        Inbound Estimated Cost of the Post
--        readability score
--        word count
--        character count
--        number of backlinks
--        Brand mention
--        sentiment
-
+    Word Count
+    Character Count
+    Cost for Article for API
+    Keywords
+    SEO Score
+    Readability Score
+    Estimated Reading Time
+    Human Generated Content Score
+    Engagement
+    Call to Action
+    number of backlinks
+    Brand mention
+    sentiment
     """
-   
 
-# migrate the cost estimation logic to the main file
-# Show the Estimated Cost per article below with a sepeartion line considering the input and output tokens.
-# Writer AI Cost projection per article
-# Total Output Token Count=  prompt_char_count + generated_char_count
-# Input per token price: 7.50/1,000,000 = 0.0000075 per token
-# Output per token price: 22.50/1,000,000=0.0000225 per token
-# Cost of article: (Total Output Token Count * $30.00) / 1,000,000
+# platform_character_limits = {
+#     'LinkedIn': 2000,
+#     'Facebook': 1500,
+#     'Instagram': 1300,
+#     'X (Twitter)': 280,
+#     'Instagram Threads': 500
+# }
+
+# def generate_post(topic, platform):
+#     character_limit = platform_character_limits.get(platform, 500)  # Default to 500 if platform not found
+#     prompt = general_prompt(platform, character_limit)
+#     # Add code to generate the post using the prompt
+#     return prompt.format(Topic=topic)
+
+
+# #example usage
+# topic = "The importance of sustainable business practices"
+
+# linkedin_post = generate_linkedin_post(topic)
+# facebook_post = generate_facebook_post(topic)
+# instagram_post = generate_instagram_post(topic)
+# twitter_post = generate_twitter_post(topic)
+# threads_post = generate_threads_post(topic)
+
+# # Print or use the generated posts
+# print("LinkedIn Post:\n", linkedin_post)
+# print("Facebook Post:\n", facebook_post)
+# print("Instagram Post:\n", instagram_post)
+# print("Twitter Post:\n", twitter_post)
+# print("Threads Post:\n", threads_post)
+
+
+# # migrate the cost estimation logic to the main file
+# # Show the Estimated Cost per article below with a sepeartion line considering the input and output tokens.
+# # Writer AI Cost projection per article
+# # Total Output Token Count=  prompt_char_count + generated_char_count
+# # Input per token price: 7.50/1,000,000 = 0.0000075 per token
+# # Output per token price: 22.50/1,000,000=0.0000225 per token
+# # Cost of article: (Total Output Token Count * $30.00) / 1,000,000
