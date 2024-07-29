@@ -82,7 +82,7 @@ if st.session_state.generated_text:
 
             payload = {
                 'message': st.session_state.generated_text,
-                'access_token': "EAAHJqTXE0P4BOZCvZCC2iwbOOOrtsBDPbjyhgVQlfrtrkGFLLYp1eODOikZAP4aS3ZCzBsVkAdEESCbMJjS4WH4df97XOYncRqB6XD7DDpEbWmI8RnAB98OFP0Nl8OZB8ZBAeMpLUwHBdlCa75gmgavpouyCXA1cSwJstbGpZBAj62jtxBqPDoi67aJwLWyNbnBNE70ZBCIUwI2trZBxOVEZBfEhDZBNPtTakKpPtAKbCEZD",
+                'access_token': "EAAHJqTXE0P4BO6ZBaUI5i27Js0B5ikTZB5WGcILozWhkikD1bylNpqKtGEe3gzE4PT1MBqNRT7pHSfKnZAf6byaOHMThlaxJ2Q1fZAoImNBtgjuLMXrWSr59bvKf2GzhbbxCi0ZB1yyiOkuSr0qWpqoBqDfZBrjTLyta9ZCVFsbX8ex8qiJ2NGZAwPAbXwQkWjZBMua5a4L3jsMCeIhZAhuGEOyUt9ujMDuLXOnEgdDhcZD ",
                 # 'access_token': fb_access_token cannot work why
             }
             headers = {
@@ -94,12 +94,12 @@ if st.session_state.generated_text:
             st.write("Payload:", payload)
             st.write("Headers:", headers)
 
-            # response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+            response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
 
-            # if response.status_code == 200:
-            #     st.success("Post published successfully on Facebook!")
-            # else:
-            #     st.error(f"Failed to publish post: {response.text}")
+            if response.status_code == 200:
+                st.success("Post published successfully on Facebook!")
+            else:
+                st.error(f"Failed to publish post: {response.text}")
 
 # original OpenAI API logic
 # if button_generate:
