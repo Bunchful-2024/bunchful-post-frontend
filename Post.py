@@ -4,12 +4,18 @@ from services.prompts import general_prompt
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load and set up environment variables
 load_dotenv()
-
 genai.configure(api_key=os.getenv("API_KEY"))
-
 model = genai.GenerativeModel('gemini-1.5-pro')
+
+# Set up initial session state
+if 'content_type' not in st.session_state:
+    st.session_state.content_type = ""
+if 'platforms' not in st.session_state:
+    st.session_state.platforms = []
+if 'generate_all' not in st.session_state:
+    st.session_state.generate_all = False
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -25,36 +31,32 @@ topic = st.text_input("Enter your keywords here:")
 
 # Step 3: Select Content Type
 st.markdown("#### Step 3: Select Content Type")
-content_type = ["Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
+content_choices = ["All", "Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
                 "Emails - Promotional", "Emails - Cold", "Emails - Outbounds", "Emails - Warm", "Newsletters", "Welcome", "SMS Messages", "Job Posts"]
-
-content = st.selectbox("Select your content type:", content_type, index=0)
+st.session_state.content_type = st.selectbox("Select your content type:", content_choices, index=1)
 
 # Step 4: Select Platform
 content_to_platform = {
-    "Social Media Post": ["All","LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
-    "Video Scripts": ["All", "Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
-    "Articles": ["All", "Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
-    "Blogs": ["All", "Website", "Tumblr"],
-    "Ads": ["All", "Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
-    "Case Study": ["All"],
-    "Press Release": ["All"],
-    "Emails - Promotional": ["All"],
-    "Emails - Cold": ["All"],
-    "Emails - Outbounds": ["All"],
-    "Emails - Warm": ["All"],
-    "Newsletters": ["All"],
-    "Welcome": ["All"],
+    "Social Media Post": ["LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
+    "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
+    "Articles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
+    "Blogs": ["Website", "Tumblr"],
+    "Ads": ["Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
+    "Case Study": [],
+    "Press Release": [],
+    "Emails - Promotional": [],
+    "Emails - Cold": [],
+    "Emails - Outbounds": [],
+    "Emails - Warm": [],
+    "Newsletters": [],
+    "Welcome": [],
     "SMS Messages": ["Idealist"],
-    "Job Posts": ["All"]
+    "Job Posts": []
 }
-st.markdown("#### Step 4: Select Platform")
 
-# SDGs Topic Select
-platforms = st.multiselect(
-    "Select your topic:",
-    ['LinkedIn', 'Instagram', 'Facebook', 'X (Twitter)', 'Instagram Thread']
-)
+st.markdown("#### Step 4: Select Platform")
+st.session_state.generate_all = st.checkbox("Generate for all platforms", value=False)
+st.session_state.platforms = st.multiselect("Select your platform:", content_to_platform[st.session_state.content_type], disabled=st.session_state.generate_all)
 
 
 # Range for character limits
@@ -77,7 +79,7 @@ platform_character_limits = {
 if generate_button:
     try:
         # Process each selected platform
-        for platform in platforms:
+        for platform in st.session_state.platforms:
             # Use platform default limit if it falls within the user-specified range
             character_limit = min(max_char_limit, platform_character_limits.get(platform, 500))
             character_limit = max(min_char_limit, character_limit)
