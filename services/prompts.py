@@ -14,17 +14,14 @@ Do NOT be pushy or salesy with your writing style. We want the reader to know ou
 Clarify the concepts in the article by anchoring them in vivid, conceivable real-life scenarios. Feel free to craft illustrative anecdotes that shed light on the subject matter. Transparency is key here—ensure that these hypothetical situations are presented as fictional examples, NOT as factual occurrences, as we want to maintain integrity with the reader.
 The introduction of the article should identify the problem the buyer has and contextualize who they are. It should also outline what the reader will get and learn from reading the post, and the payoff that will come with completing the content.
 Vary the length of the paragraphs and sentences in these writings. Look for opportunities to create punchy, incisive moments to land your points, while at other times produce paragraphs that are 2-4 sentences as needed.
+Put "**Generated Content:**" before this section.
 Show the below attributes with the separation line.
 Correlate images to the content. One from Pexels, one from Leonardo, and one from DALL-E.
+Put "**Images:**" before this section.
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Make the Content 95 percent or greator human genereated.
 Show the below attributes with the separation line.
----
-Generated Content.
----
-Images.
----
 Article Attributes. Bullet these:
     Word Count
     Character Count

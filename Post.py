@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 from services.prompts import general_prompt  
+from services.functions import extract_generated_content
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -97,14 +98,15 @@ if generate_button:
             response = model.generate_content(prompt)
 
             # Accessing the content from the response object
-            generated_text = response.text
+            generated_result = response.text
+            generated_text = extract_generated_content(response.text)
             generated_char_count = len(generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
             
             # Display results
-            st.markdown(f"### Generated Content for {platform}:")
-            st.write(generated_text)
+            st.markdown(f"### Generated Result for {platform}:")
+            st.write(generated_result)
 
             # Display character counts and cost projection
             st.markdown("### Writer AI Cost projection per article")
