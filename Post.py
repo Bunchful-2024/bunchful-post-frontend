@@ -2,14 +2,14 @@ import os
 import streamlit as st
 import requests
 import json
-import services.prompts as prompts
-from openai import OpenAI
+import google.generativeai as genai
+from services.prompts import general_prompt 
 from dotenv import load_dotenv
 
 load_dotenv()
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-)
+genai.configure(api_key=os.getenv("API_KEY"))
+
+model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Access environment variables
 fb_page_id = os.environ.get('FB_PAGE_ID')
@@ -36,44 +36,77 @@ st.divider()
 # Content Type
 st.write("Select your Content Type:")
 
-# simplize for this branch
-# col1, col2, col3 = st.columns(3)
-
-# with col1:
-#    facebook = st.checkbox('Facebook Post')
-#    medium = st.checkbox('LinkedIn Post')
-
-# with col2:
-#    instagram = st.checkbox('Instagram Post')
-#    tweet = st.checkbox('X (Tweet)')
-
-# with col3:
-#    linkedin = st.checkbox('Instagram Threads')
-#    all = st.checkbox('All')
-
 # Platfrom select
-platforms = st.selectbox(
+platforms = st.multiselect(
     "Select your platform:",
-    ['LinkedIn', 'Instagram', 'Facebook', 'X', 'Instagram Thread']
+    ['LinkedIn', 'Instagram', 'Facebook', 'X (Twitter)', 'Instagram Thread']
 )
 
 
-# Generate Button
+# Range for character limits
+min_char_limit = st.slider("Minimum Character Limit", min_value=100, max_value=2000, value=280)
+max_char_limit = st.slider("Maximum Character Limit", min_value=100, max_value=2000, value=1000)
+
+# Generate button
 button_generate = st.button("Generate")
+
+# Platform character limits (for default values if range is not specified)
+platform_character_limits = {
+    'LinkedIn': 2000,
+    'Facebook': 1500,
+    'Instagram': 1300,
+    'X (Twitter)': 280,
+    'Instagram Threads': 500
+}
 
 # Mimic Generate Button Logic/Put Gemini logic here
 if button_generate:
-    st.session_state.generated_text = '''
-    Eradicating extreme poverty for all people everywhere by 2030 is a pivotal goal of the 2030 Agenda for Sustainable Development. 
-    Extreme poverty, defined as surviving on less than $2.15 per person per day at 2017 purchasing power parity, has witnessed remarkable declines over recent decades. 
-            
-    However, the emergence of COVID-19 marked a turning point, reversing these gains as the number of individuals living in extreme poverty increased for the first time in a generation by almost 90 million over previous predictions.
-    '''
-if st.session_state.generated_text:
-    if platforms == 'Facebook':
-        st.markdown("#### Facebook Post:")
-        st.write(st.session_state.generated_text)
+    try:
+        # Process each selected platform
+        for platform in platforms:
+            # Use platform default limit if it falls within the user-specified range
+            character_limit = min(max_char_limit, platform_character_limits.get(platform, 500))
+            character_limit = max(min_char_limit, character_limit)
 
+            # Generate prompt based on the platform and character limit
+            prompt = general_prompt(platform, character_limit)
+            prompt = prompt.format(Topic=topic)
+
+            # Calculate estimated token count
+            prompt_tokens = len(prompt.split())
+            prompt_char_count = len(prompt)
+
+            # Generate content using the model instance
+            response = model.generate_content(prompt)
+
+            # Accessing the content from the response object
+            generated_text = response.text
+            generated_char_count = len(generated_text)
+            input_tokens = response.usage_metadata.prompt_token_count
+            output_tokens = response.usage_metadata.candidates_token_count
+            
+            # Display results and store generated text in session state
+            st.markdown(f"### Generated Content for {platform}:")
+            st.write(generated_text)
+            st.session_state.generated_text = generated_text
+
+            # Display character counts and cost projection
+            st.markdown("### Writer AI Cost projection per article")
+            st.write(f"Prompt Character Count: {prompt_char_count}")
+            st.write(f"Generated Content Character Count: {generated_char_count}")
+            st.write(f"Input tokens: {input_tokens}")  # Input token count
+            st.write(f"Output tokens: {output_tokens}")  # Output token count
+            token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
+            st.write(f"Estimated cost: ${token_cost:.6f}")
+
+    except AttributeError as e:
+        st.error(f"An attribute error occurred: {e}")
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+
+if st.session_state.generated_text:
+    if platforms == ['Facebook']:
+        st.subheader("Step 2: Publish to Facebook")
         publish_button = st.button("Publish")
         #publish content to FB page
         if publish_button:
@@ -82,7 +115,7 @@ if st.session_state.generated_text:
 
             payload = {
                 'message': st.session_state.generated_text,
-                'access_token': "EAAHJqTXE0P4BO6ZBaUI5i27Js0B5ikTZB5WGcILozWhkikD1bylNpqKtGEe3gzE4PT1MBqNRT7pHSfKnZAf6byaOHMThlaxJ2Q1fZAoImNBtgjuLMXrWSr59bvKf2GzhbbxCi0ZB1yyiOkuSr0qWpqoBqDfZBrjTLyta9ZCVFsbX8ex8qiJ2NGZAwPAbXwQkWjZBMua5a4L3jsMCeIhZAhuGEOyUt9ujMDuLXOnEgdDhcZD ",
+                'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
                 # 'access_token': fb_access_token cannot work why
             }
             headers = {
