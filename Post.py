@@ -32,21 +32,21 @@ content = st.selectbox("Select your content type:", content_type, index=0)
 
 # Step 4: Select Platform
 content_to_platform = {
-    "Social Media Post": ["LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
-    "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
-    "Articles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
-    "Blogs": ["Website", "Tumblr"],
-    "Ads": ["Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
-    "Case Study": ["None"],
-    "Press Release": ["Website"],
-    "Emails - Promotional": ["None"],
-    "Emails - Cold": ["None"],
-    "Emails - Outbounds": ["None"],
-    "Emails - Warm": ["None"],
-    "Newsletters": ["None"],
-    "Welcome": ["None"],
+    "Social Media Post": ["All","LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
+    "Video Scripts": ["All", "Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
+    "Articles": ["All", "Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
+    "Blogs": ["All", "Website", "Tumblr"],
+    "Ads": ["All", "Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
+    "Case Study": ["All"],
+    "Press Release": ["All"],
+    "Emails - Promotional": ["All"],
+    "Emails - Cold": ["All"],
+    "Emails - Outbounds": ["All"],
+    "Emails - Warm": ["All"],
+    "Newsletters": ["All"],
+    "Welcome": ["All"],
     "SMS Messages": ["Idealist"],
-    "Job Posts": ["None"]
+    "Job Posts": ["All"]
 }
 st.markdown("#### Step 4: Select Platform")
 
