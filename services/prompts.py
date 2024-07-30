@@ -20,6 +20,11 @@ Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Make the Content 95 percent or greator human genereated.
 Show the below attributes with the separation line.
+---
+Generated Content.
+---
+Images.
+---
 Article Attributes. Bullet these:
     Word Count
     Character Count

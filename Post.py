@@ -72,7 +72,8 @@ platform_character_limits = {
     'Facebook': 1500,
     'Instagram': 1300,
     'X (Twitter)': 280,
-    'Instagram Threads': 500
+    'Instagram Threads': 500,
+    'Medium': 2000,
 }
 
 # Generate content on button click
