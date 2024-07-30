@@ -31,7 +31,7 @@ topic = st.text_input("Enter your keywords here:")
 
 # Step 3: Select Content Type
 st.markdown("#### Step 3: Select Content Type")
-content_choices = ["All", "Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
+content_choices = ["Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
                 "Emails - Promotional", "Emails - Cold", "Emails - Outbounds", "Emails - Warm", "Newsletters", "Welcome", "SMS Messages", "Job Posts"]
 st.session_state.content_type = st.selectbox("Select your content type:", content_choices, index=1)
 
