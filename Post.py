@@ -12,12 +12,43 @@ genai.configure(api_key=os.getenv("API_KEY"))
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Title
-st.title("🩵 Bunchful Post")
+st.title("🙌 Bunchful Post")
 st.caption("Welcome to Bunchful Post! Manage your content here.")
 
-# Section 1: Content Curation
-st.subheader("Step 1: Content Curation")
-st.write("Customize your content with the help of AI.")
+# Step 1: Enter Topic
+st.markdown("#### Step 1: Enter Topic")
+topic = st.text_input("Enter your topic here:")
+
+# Step 2: Enter Keywords
+st.markdown("#### Step 2: Enter Keywords")
+topic = st.text_input("Enter your keywords here:")
+
+# Step 3: Select Content Type
+st.markdown("#### Step 3: Select Content Type")
+content_type = ["Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
+                "Emails - Promotional", "Emails - Cold", "Emails - Outbounds", "Emails - Warm", "Newsletters", "Welcome", "SMS Messages", "Job Posts"]
+
+content = st.selectbox("Select your content type:", content_type, index=0)
+
+# Step 4: Select Platform
+content_to_platform = {
+    "Social Media Post": ["LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
+    "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
+    "Articles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
+    "Blogs": ["Website", "Tumblr"],
+    "Ads": ["Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
+    "Case Study": ["None"],
+    "Press Release": ["Website"],
+    "Emails - Promotional": ["None"],
+    "Emails - Cold": ["None"],
+    "Emails - Outbounds": ["None"],
+    "Emails - Warm": ["None"],
+    "Newsletters": ["None"],
+    "Welcome": ["None"],
+    "SMS Messages": ["Idealist"],
+    "Job Posts": ["None"]
+}
+st.markdown("#### Step 4: Select Platform")
 
 # SDGs Topic Select
 platforms = st.multiselect(
@@ -25,8 +56,7 @@ platforms = st.multiselect(
     ['LinkedIn', 'Instagram', 'Facebook', 'X (Twitter)', 'Instagram Thread']
 )
 
-# Text area for entering the topic/keyword
-topic = st.text_area("Enter your Topic/Keyword")
+
 # Range for character limits
 min_char_limit = st.slider("Minimum Character Limit", min_value=100, max_value=2000, value=280)
 max_char_limit = st.slider("Maximum Character Limit", min_value=100, max_value=2000, value=1000)
