@@ -194,7 +194,7 @@ if st.session_state.generated_text:
         #publish content to Medium
         if publish_button:
             # Medium API endpoint for posting
-            medium_url = f"https://api.medium.com/v1/users/22914d8ee9fda4b02d50167ceac3c2052463e356671a38481054159fa0bca6745/posts"
+            medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
 
             payload = json.dumps({
                 "title": extract_title(st.session_state.formatted_text),
