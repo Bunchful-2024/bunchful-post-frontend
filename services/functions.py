@@ -1,4 +1,5 @@
 # helper functions
+import streamlit as st
 
 # function to extract the generated content from the output string
 def extract_generated_content(content):
@@ -39,3 +40,8 @@ def extract_title(markdown_string):
             return line.lstrip("#").strip()
     # If no title found, return None
     return None
+
+
+def reset_session_state():
+    for key in st.session_state.keys():
+        del st.session_state[key]
