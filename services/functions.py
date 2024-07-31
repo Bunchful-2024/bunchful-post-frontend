@@ -20,3 +20,10 @@ def extract_generated_content(content):
     else:
         # Return the full content if "Images:" section is not found
         return content.strip()
+    
+def transform_to_markdown(input_string):
+    # Replace "##" with "#"
+    transformed_string = input_string.replace("##", "#")
+    # Specify the new line character
+    transformed_string = transformed_string.replace("\n", "\\n")
+    return transformed_string

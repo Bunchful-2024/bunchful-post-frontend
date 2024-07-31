@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 # Load and set up environment variables
 load_dotenv()
-genai.configure(api_key=os.getenv("API_KEY"))
+genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo") #os not working so change to this temporarily
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Access environment variables
