@@ -1,5 +1,6 @@
 #predefined prompts for Gemini to use from
 
+#prompt on line 20 are required for text extraction
 def general_prompt(platform, character_limit):
     return f"""
 Create a {platform} post highlighting the significance of {{Topic}}. Use primary keywords in italics, with a keyword density of less than 2% (i.e., less than twice per 100 words). Write in an engaging, conversational style using idioms and varied sentence structures, incorporating over 30% transition words for readability. Start with a compelling introduction related to {{Topic}} and use clear headings or bullet points if needed. Include a link to a relevant resource or further reading and ensure the post length adheres to the recommended character count for optimal engagement:
@@ -16,6 +17,7 @@ The introduction of the article should identify the problem the buyer has and co
 Vary the length of the paragraphs and sentences in these writings. Look for opportunities to create punchy, incisive moments to land your points, while at other times produce paragraphs that are 2-4 sentences as needed.
 Show the below attributes with the separation line.
 Correlate images to the content. One from Pexels, one from Leonardo, and one from DALL-E.
+Put "**Images:**" before this section.
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Make the Content 95 percent or greator human genereated.
