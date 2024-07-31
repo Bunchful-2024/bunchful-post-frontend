@@ -21,6 +21,10 @@ if 'keyword' not in st.session_state:
     st.session_state.keyword = ""
 if 'topic' not in st.session_state:
     st.session_state.topic = ""
+if 'char_limit' not in st.session_state:
+    st.session_state.char_limit = 1500
+if 'edited_content' not in st.session_state:
+    st.session_state.edited_content = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -45,7 +49,7 @@ st.session_state.content_type = st.selectbox("Select your content type:", conten
 content_to_platform = {
     "Social Media Post": ["LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
     "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
-    "Articles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
+    "Articles": ["Website", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Substack", "Ghost", "Write.as"],
     "Blogs": ["Website", "Tumblr"],
     "Ads": ["Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
     "Case Study": [],
@@ -64,14 +68,6 @@ st.markdown("#### Step 4: Select Platform")
 st.session_state.generate_all = st.checkbox("Generate for all platforms", value=False)
 st.session_state.platforms = st.multiselect("Select your platform:", content_to_platform[st.session_state.content_type], disabled=st.session_state.generate_all)
 
-
-# Range for character limits
-min_char_limit = st.slider("Minimum Character Limit", min_value=100, max_value=2000, value=280)
-max_char_limit = st.slider("Maximum Character Limit", min_value=100, max_value=2000, value=1000)
-
-# Generate button
-generate_button = st.button("Generate")
-
 # Platform character limits (for default values if range is not specified)
 platform_character_limits = {
     'LinkedIn': 2000,
@@ -79,21 +75,43 @@ platform_character_limits = {
     'Instagram': 1300,
     'X (Twitter)': 280,
     'Instagram Threads': 500,
-    'Medium': 2000,
+    'Medium': 1500,
+    'Hub Pages':1500,
+    'Vocal Media':1500,
+    'NewsBreak':700,
+    'Steemit':800,
+    'Substack':1200,
+    'Ghost':1500,
+    'Write.as':800
 }
+
+# Function to get the default character limit for the selected platforms
+def get_default_char_limit(platforms):
+    if not platforms:
+        return 1500
+    return min([platform_character_limits.get(platform, 1500) for platform in platforms])
+
+# Update the character limit based on selected platforms
+if st.session_state.platforms:
+    st.session_state.char_limit = get_default_char_limit(st.session_state.platforms)
+
+# Single slider for character limit
+char_limit = st.slider("Select Character Limit", min_value=100, max_value=3000, value=st.session_state.char_limit)
+
+# Generate button
+generate_button = st.button("Generate")
 
 # Generate content on button click
 if generate_button:
     try:
         # Process each selected platform
         for platform in st.session_state.platforms:
-            # Use platform default limit if it falls within the user-specified range
-            character_limit = min(max_char_limit, platform_character_limits.get(platform, 500))
-            character_limit = max(min_char_limit, character_limit)
+            # Use the specified character limit if it falls within the platform's default range
+            default_limit = platform_character_limits.get(platform, 1500)
+            character_limit = min(default_limit, char_limit)
 
             # Generate prompt based on the platform and character limit
-            prompt = general_prompt(platform, character_limit)
-            prompt = prompt.format(Topic=str(st.session_state.topic))
+            prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_state.keyword)
 
             # Calculate estimated token count
             prompt_tokens = len(prompt.split())
@@ -105,7 +123,6 @@ if generate_button:
             # Accessing the content from the response object
             generated_result = response.text
             generated_text = extract_generated_content(response.text)
-            #print(generated_result) #for testing
             generated_char_count = len(generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
@@ -124,7 +141,12 @@ if generate_button:
             st.write(f"Estimated cost: ${token_cost:.6f}")
 
             st.markdown("### Edit Section")
-            st.text_area("Prompt", value=generated_text, height=200)
+            edited_text = st.text_area("Edit Generated Content", value=generated_text, height=300)
+            
+            # Apply Changes button
+            if st.button("Apply Changes"):
+                st.markdown(f"### Edited Article for {platform}:")
+                st.write(st.session_state.edited_content)
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
