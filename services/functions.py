@@ -25,7 +25,7 @@ def transform_to_markdown(input_string):
     # Replace "##" with "#"
     transformed_string = input_string.replace("##", "#")
     # Specify the new line character
-    transformed_string = transformed_string.replace("\n", "\\n")
+    transformed_string = transformed_string.replace("\n", "\n\n ")
     return transformed_string
 
 def extract_title(markdown_string):

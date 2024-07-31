@@ -154,6 +154,7 @@ if generate_button:
             st.text_area("Prompt", value=st.session_state.generated_text, height=200)
 
             st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
+            print(st.session_state.formatted_text) #for testing
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
