@@ -167,22 +167,6 @@ if st.session_state.generated_text:
             else:
                 st.error(f"Failed to publish post: {response.text}")
 
-# original OpenAI API logic
-# if button_generate:
-#     if content_type == 'Blog':
-#         blog_prompt = prompts.generate_blog_prompt(topics, input_draft)
-#         generated_response = client.chat.completions.create(
-#             model="gpt-3.5-turbo",
-#             messages=[
-#                 {"role": "system", "content": prompts.general_prompt()},
-#                 {"role": "user", "content": prompts.generate_blog_prompt(topics, input_draft)},
-#             ]
-#         )
-#         st.write(generated_response.choices[0].message.content)
-#     else:
-#         st.write("Content type not supported yet.")
-
-
 # Sidebar for guidance
 st.sidebar.title("Need Help?")
 st.sidebar.caption("Tips for using the tool.")
