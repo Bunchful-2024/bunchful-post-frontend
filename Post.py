@@ -17,6 +17,10 @@ if 'platforms' not in st.session_state:
     st.session_state.platforms = []
 if 'generate_all' not in st.session_state:
     st.session_state.generate_all = False
+if 'keyword' not in st.session_state:
+    st.session_state.keyword = ""
+if 'topic' not in st.session_state:
+    st.session_state.topic = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -24,19 +28,20 @@ st.caption("Welcome to Bunchful Post! Manage your content here.")
 
 # Step 1: Enter Topic
 st.markdown("#### Step 1: Enter Topic")
-topic = st.text_input("Enter your topic here:")
+st.session_state.topic = st.text_input("Enter your topic here:")
 
 # Step 2: Enter Keywords
 st.markdown("#### Step 2: Enter Keywords")
-keyword = st.text_input("Enter your keywords here:")
+st.session_state.keyword = st.text_input("Enter your keywords here:")
 
 # Step 3: Select Content Type
 st.markdown("#### Step 3: Select Content Type")
 content_choices = ["Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
                 "Emails - Promotional", "Emails - Cold", "Emails - Outbounds", "Emails - Warm", "Newsletters", "Welcome", "SMS Messages", "Job Posts"]
-st.session_state.content_type = st.selectbox("Select your content type:", content_choices, index=1)
+st.session_state.content_type = st.selectbox("Select your content type:", content_choices, index=0)
 
 # Step 4: Select Platform
+# dictionary to map content types to platforms
 content_to_platform = {
     "Social Media Post": ["LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
     "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
@@ -88,7 +93,7 @@ if generate_button:
 
             # Generate prompt based on the platform and character limit
             prompt = general_prompt(platform, character_limit)
-            prompt = prompt.format(Topic=topic)
+            prompt = prompt.format(Topic=str(st.session_state.topic))
 
             # Calculate estimated token count
             prompt_tokens = len(prompt.split())
@@ -101,7 +106,7 @@ if generate_button:
             generated_result = response.text
             generated_text = extract_generated_content(response.text)
             #print(generated_result) #for testing
-            generated_char_count = len(generated_result)
+            generated_char_count = len(generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
             
