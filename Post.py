@@ -3,7 +3,7 @@ import os
 import requests
 import streamlit as st
 from services.prompts import general_prompt  
-from services.functions import extract_generated_content
+from services.functions import extract_generated_content, transform_to_markdown
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -32,6 +32,8 @@ if 'char_limit' not in st.session_state:
     st.session_state.char_limit = 1500
 if 'generated_text' not in st.session_state:
     st.session_state.generated_text = ""
+if 'formatted_text' not in st.session_state:
+    st.session_state.formatted_text = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -150,6 +152,8 @@ if generate_button:
 
             st.markdown("### Edit Section")
             st.text_area("Prompt", value=st.session_state.generated_text, height=200)
+
+            st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
