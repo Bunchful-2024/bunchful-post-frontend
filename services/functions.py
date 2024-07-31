@@ -29,7 +29,7 @@ def transform_to_markdown(input_string):
     return transformed_string
 
 def extract_title(markdown_string):
-    # Split the input string by new line characters
+    # Split the input string by the specified new line character
     lines = markdown_string.split("\\n")
     # Iterate through the lines to find the first heading
     for line in lines:

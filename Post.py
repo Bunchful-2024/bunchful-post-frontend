@@ -213,7 +213,7 @@ if st.session_state.generated_text:
 
             response = requests.post(medium_url, headers=headers, data=payload)
 
-            if response.status_code == 200:
+            if response.status_code == 201:
                 st.success("Post published successfully on Medium!")
             else:
                 st.error(f"Failed to publish post: {response.text}")
