@@ -28,6 +28,8 @@ if 'keyword' not in st.session_state:
     st.session_state.keyword = ""
 if 'topic' not in st.session_state:
     st.session_state.topic = ""
+if 'char_limit' not in st.session_state:
+    st.session_state.char_limit = 1500
 if 'generated_text' not in st.session_state:
     st.session_state.generated_text = ""
 
