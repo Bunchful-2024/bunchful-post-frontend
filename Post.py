@@ -1,13 +1,15 @@
+import json
 import os
+import requests
 import streamlit as st
 from services.prompts import general_prompt  
-from services.functions import extract_generated_content
+from services.functions import extract_generated_content, extract_title, transform_to_markdown
 import google.generativeai as genai
 from dotenv import load_dotenv
 
 # Load and set up environment variables
 load_dotenv()
-genai.configure(api_key=os.getenv("API_KEY"))
+genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo")
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Set up initial session state
@@ -25,6 +27,10 @@ if 'char_limit' not in st.session_state:
     st.session_state.char_limit = 1500
 if 'edited_content' not in st.session_state:
     st.session_state.edited_content = ""
+if 'generated_text' not in st.session_state:
+    st.session_state.generated_text = ""
+if 'formatted_text' not in st.session_state:
+    st.session_state.formatted_text = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -122,8 +128,8 @@ if generate_button:
 
             # Accessing the content from the response object
             generated_result = response.text
-            generated_text = extract_generated_content(response.text)
-            generated_char_count = len(generated_text)
+            st.session_state.generated_text = extract_generated_content(response.text)
+            generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
             
@@ -141,17 +147,50 @@ if generate_button:
             st.write(f"Estimated cost: ${token_cost:.6f}")
 
             st.markdown("### Edit Section")
-            edited_text = st.text_area("Edit Generated Content", value=generated_text, height=300)
+            edited_text = st.text_area("Edit Generated Content", value=st.session_state.generated_text, height=300)
+
+            st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
             
-            # Apply Changes button
-            if st.button("Apply Changes"):
-                st.markdown(f"### Edited Article for {platform}:")
-                st.write(st.session_state.edited_content)
+            # # Apply Changes button
+            # if st.button("Apply Changes"):
+            #     st.markdown(f"### Edited Article for {platform}:")
+            #     st.write(st.session_state.edited_content)
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
     except Exception as e:
         st.error(f"An error occurred: {e}")
+
+if st.session_state.generated_text:
+    if st.session_state.platforms == ['Medium']:
+        publish_button = st.button("Publish")
+        #publish content to Medium
+        if publish_button:
+            # Medium API endpoint for posting https://api.medium.com/v1/users/{author-id}/posts
+            medium_url = f"https://api.medium.com/v1/users/1fee0d4044c24f699450d12471fbb79c280ef633fd8b5d060163ec22727965524/posts"
+
+            payload = json.dumps({
+                "title": extract_title(st.session_state.formatted_text),
+                "contentFormat": "markdown",
+                "content": st.session_state.formatted_text,
+                "publishStatus": "public"
+            })
+
+            # 'Authorization': 'Bearer {access-token}',
+            headers = {
+                'Host': 'api.medium.com',
+                'Authorization': 'Bearer 2f6da36bcd743d1654faeb857d333a294cf1aee78b7463a98eeb65aa03204f81d',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8',
+            }
+
+            response = requests.post(medium_url, headers=headers, data=payload)
+
+            if response.status_code == 201:
+                st.success("Post published successfully on Medium!")
+            else:
+                st.error(f"Failed to publish post: {response.text}")
     
 # Sidebar for guidance
 st.sidebar.title("Need Help?")
