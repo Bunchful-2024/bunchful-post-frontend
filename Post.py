@@ -118,7 +118,7 @@ if generate_button:
             character_limit = min(default_limit, char_limit)
 
             # Generate prompt based on the platform and character limit
-            prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_st)
+            prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_state.keyword)
 
             # Calculate estimated token count
             prompt_tokens = len(prompt.split())
