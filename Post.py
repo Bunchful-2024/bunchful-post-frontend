@@ -28,6 +28,8 @@ if 'keyword' not in st.session_state:
     st.session_state.keyword = ""
 if 'topic' not in st.session_state:
     st.session_state.topic = ""
+if 'generated_text' not in st.session_state:
+    st.session_state.generated_text = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -110,9 +112,9 @@ if generate_button:
 
             # Accessing the content from the response object
             generated_result = response.text
-            generated_text = extract_generated_content(response.text)
+            st.session_state.generated_text = extract_generated_content(response.text)
             #print(generated_result) #for testing
-            generated_char_count = len(generated_text)
+            generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
             
@@ -130,7 +132,7 @@ if generate_button:
             st.write(f"Estimated cost: ${token_cost:.6f}")
 
             st.markdown("### Edit Section")
-            st.text_area("Prompt", value=generated_text, height=200)
+            st.text_area("Prompt", value=st.session_state.generated_text, height=200)
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
