@@ -27,3 +27,15 @@ def transform_to_markdown(input_string):
     # Specify the new line character
     transformed_string = transformed_string.replace("\n", "\\n")
     return transformed_string
+
+def extract_title(markdown_string):
+    # Split the input string by new line characters
+    lines = markdown_string.split("\\n")
+    # Iterate through the lines to find the first heading
+    for line in lines:
+        line = line.strip()  # Remove leading and trailing whitespace
+        if line.startswith("#"):
+            # Remove the leading "#" and return the rest as the title
+            return line.lstrip("#").strip()
+    # If no title found, return None
+    return None

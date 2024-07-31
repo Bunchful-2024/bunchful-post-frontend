@@ -3,7 +3,7 @@ import os
 import requests
 import streamlit as st
 from services.prompts import general_prompt  
-from services.functions import extract_generated_content, transform_to_markdown
+from services.functions import extract_generated_content, transform_to_markdown, extract_title
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -189,6 +189,35 @@ if st.session_state.generated_text:
                 st.success("Post published successfully on Facebook!")
             else:
                 st.error(f"Failed to publish post: {response.text}")
+    elif st.session_state.platforms == ['Medium']:
+        publish_button = st.button("Publish")
+        #publish content to Medium
+        if publish_button:
+            # Medium API endpoint for posting
+            medium_url = f"https://api.medium.com/v1/users/22914d8ee9fda4b02d50167ceac3c2052463e356671a38481054159fa0bca6745/posts"
+
+            payload = json.dumps({
+                "title": extract_title(st.session_state.formatted_text),
+                "contentFormat": "markdown",
+                "content": st.session_state.formatted_text,
+                "publishStatus": "public"
+            })
+
+            headers = {
+                'Host': 'api.medium.com',
+                'Authorization': 'Bearer 2958656ad24671bca553257e68aac2a094b7bf62ebd268ac0c7c495eba1ea4291',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Accept-Charset': 'utf-8',
+            }
+
+            response = requests.post(medium_url, headers=headers, data=payload)
+
+            if response.status_code == 200:
+                st.success("Post published successfully on Medium!")
+            else:
+                st.error(f"Failed to publish post: {response.text}")
+
 
 # Sidebar for guidance
 st.sidebar.title("Need Help?")
