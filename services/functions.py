@@ -1,21 +1,22 @@
 # helper functions
 
 # function to extract the generated content from the output string
-def extract_generated_content(output_string):
-    # Define the delimiters for the Generated Content section
-    content_start = "**Generated Content:**"
-    content_end = "**Images:**"
+def extract_generated_content(content):
+    """
+    Extract the generated content from the given content before the "Images" section.
 
-    # Find the start and end positions of the content
-    start_index = output_string.find(content_start)
-    end_index = output_string.find(content_end)
+    Args:
+        content (str): The complete content including the "Images" section.
 
-    if start_index == -1 or end_index == -1:
-        # Delimiters not found, return None or an empty string
-        return None
-
-    # Extract the content between the delimiters
-    start_index += len(content_start)  # Move index to the start of the actual content
-    generated_content = output_string[start_index:end_index].strip()
-
-    return generated_content
+    Returns:
+        str: The extracted generated content before the "Images" section.
+    """
+    # Split the content by the "Images:" keyword
+    split_content = content.split("**Images:**", 1)
+    
+    # Return the content before the "Images" section if it exists
+    if len(split_content) > 1:
+        return split_content[0].strip()
+    else:
+        # Return the full content if "Images:" section is not found
+        return content.strip()

@@ -28,7 +28,7 @@ topic = st.text_input("Enter your topic here:")
 
 # Step 2: Enter Keywords
 st.markdown("#### Step 2: Enter Keywords")
-topic = st.text_input("Enter your keywords here:")
+keyword = st.text_input("Enter your keywords here:")
 
 # Step 3: Select Content Type
 st.markdown("#### Step 3: Select Content Type")
@@ -100,7 +100,8 @@ if generate_button:
             # Accessing the content from the response object
             generated_result = response.text
             generated_text = extract_generated_content(response.text)
-            generated_char_count = len(generated_text)
+            #print(generated_result) #for testing
+            generated_char_count = len(generated_result)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
             
@@ -116,6 +117,9 @@ if generate_button:
             st.write(f"Output tokens: {output_tokens}")  # Output token count
             token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
             st.write(f"Estimated cost: ${token_cost:.6f}")
+
+            st.markdown("### Edit Section")
+            st.text_area("Prompt", value=generated_text, height=200)
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
