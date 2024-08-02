@@ -41,7 +41,7 @@ st.caption("Welcome to Bunchful Post! Manage your content here.")
 
 # Step 1: Enter Topic
 st.markdown("#### Step 1: Enter Topic")
-st.session_state.topic = st.text_input("Enter your topic here:")
+st.session_state.topic = st.text_area("What are you writing today?")
 
 # Step 2: Enter Keywords
 st.markdown("#### Step 2: Enter Keywords")
