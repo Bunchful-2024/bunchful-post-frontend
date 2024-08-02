@@ -22,13 +22,11 @@ Transparency is key here—ensure that these hypothetical situations are present
 The introduction of the article should identify the problem the buyer has and contextualize who they are. 
 It should also outline what the reader will get and learn from reading the post, and the payoff that will come with completing the content.
 Vary the length of the paragraphs and sentences in these writings. Look for opportunities to create punchy, incisive moments to land your points, while at other times produce paragraphs that are 2-4 sentences as needed.
+Correlate 3 images to the content, marking the images like this [Image 1], [Image 2], [Image 3] in the article.
+Each image should have a caption that is 8 words or less, do not use symbols, do not start with "Photo of" or "Image of" in the sentences.
 
-Show the below attributes with the separation line.
-Generate 3 sentences for retrieving images from Pexels, format in bullet points. 
-Do not start with "Photo of" or "Image of" in the sentences.
-Each sentence cannot have over 8 words, do not use symbols.
 
-Put "**Images:**" before this section.
+
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Make the Content 95 percent or greator human genereated.
