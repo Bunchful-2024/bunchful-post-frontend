@@ -113,6 +113,7 @@ char_limit = st.slider("Select Character Limit", min_value=100, max_value=3000, 
 generate_button = st.button("Generate")
 
 # Mimic Generate Button Logic/Put Gemini logic here
+# Have to fix the disappearing generated text issue
 if generate_button:
     try:
         # Process each selected platform
