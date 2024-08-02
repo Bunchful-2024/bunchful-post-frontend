@@ -29,6 +29,9 @@ def transform_to_markdown(input_string):
     transformed_string = transformed_string.replace("\n", "\n\n ")
     return transformed_string
 
+def update_formatted_text():
+    st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
+
 def extract_title(markdown_string):
     # Split the input string by the specified new line character
     lines = markdown_string.split("\\n")

@@ -3,7 +3,7 @@ import os
 import requests
 import streamlit as st
 from services.prompts import general_prompt  
-from services.functions import extract_generated_content, transform_to_markdown, extract_title
+from services.functions import extract_generated_content, transform_to_markdown, extract_title, update_formatted_text
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -34,6 +34,8 @@ if 'generated_text' not in st.session_state:
     st.session_state.generated_text = ""
 if 'formatted_text' not in st.session_state:
     st.session_state.formatted_text = ""
+if 'edited_text' not in st.session_state:
+    st.session_state.edited_text = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -150,11 +152,6 @@ if generate_button:
             token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
             st.write(f"Estimated cost: ${token_cost:.6f}")
 
-            st.markdown("### Edit Section")
-            st.text_area("Prompt", value=st.session_state.generated_text, height=200)
-
-            st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
-            print(st.session_state.formatted_text) #for testing
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
@@ -162,6 +159,11 @@ if generate_button:
         st.error(f"An error occurred: {e}")
 
 if st.session_state.generated_text:
+    st.markdown("### Edit Section")
+    st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
+    st.session_state.edited_text = st.text_area("Prompt", value=st.session_state.generated_text, height=200)
+    print(st.session_state.formatted_text) #for testing
+
     if st.session_state.platforms == ['Facebook']:
         st.subheader("Step 2: Publish to Facebook")
         publish_button = st.button("Publish")
@@ -194,6 +196,8 @@ if st.session_state.generated_text:
         publish_button = st.button("Publish")
         #publish content to Medium
         if publish_button:
+            #transform the final text into markdown format
+            st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
             # Medium API endpoint for posting
             medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
 
