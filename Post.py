@@ -195,7 +195,7 @@ if st.session_state.generated_text:
         #publish content to Medium
         if publish_button:
             # Medium API endpoint for posting
-            medium_url = f"https://api.medium.com/v1/users/1fee0d4044c24f699450d12471fbb79c280ef633fd8b5d060163ec22727965524/posts"
+            medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
 
             payload = json.dumps({
                 "title": extract_title(st.session_state.formatted_text),
@@ -206,7 +206,7 @@ if st.session_state.generated_text:
 
             headers = {
                 'Host': 'api.medium.com',
-                'Authorization': 'Bearer 2f6da36bcd743d1654faeb857d333a294cf1aee78b7463a98eeb65aa03204f81d',
+                'Authorization': 'Bearer 2958656ad24671bca553257e68aac2a094b7bf62ebd268ac0c7c495eba1ea4291',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Accept-Charset': 'utf-8',
