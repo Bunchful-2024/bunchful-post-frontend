@@ -24,7 +24,9 @@ It should also outline what the reader will get and learn from reading the post,
 Vary the length of the paragraphs and sentences in these writings. Look for opportunities to create punchy, incisive moments to land your points, while at other times produce paragraphs that are 2-4 sentences as needed.
 
 Show the below attributes with the separation line.
-Correlate 3 images to the content. Generate sentences for retrieving images from Pexels.
+Generate 3 sentences for retrieving images from Pexels, format in bullet points. 
+Do not start with "Photo of" or "Image of" in the sentences.
+Each sentence cannot have over 8 words, do not use symbols.
 
 Put "**Images:**" before this section.
 Show the below attributes with the separation line.

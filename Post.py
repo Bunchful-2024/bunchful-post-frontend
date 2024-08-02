@@ -135,7 +135,7 @@ if generate_button:
             # Accessing the content from the response object
             generated_result = response.text
             st.session_state.generated_text = extract_generated_content(response.text)
-            #print(generated_result) #for testing
+            print(generated_result) #for testing
             generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count

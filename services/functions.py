@@ -1,5 +1,4 @@
 # helper functions
-import re
 import streamlit as st
 
 # function to extract the generated content from the output string
@@ -46,10 +45,23 @@ def extract_title(markdown_string):
     return None
 
 #function to extract the sentences for Pexels retrieval
-def extract_pexel_sentences(text):
-    # Use regex to find all text within double quotes
-    sentences = re.findall(r'"(.*?)"', text)
-    return sentences
+def extract_image_captions(text):
+    lines = text.split('\n')
+    capturing = False
+    image_captions = []
+    
+    for line in lines:
+        line = line.strip()
+        if line == "**Images:**":
+            capturing = True
+            continue
+        if line.startswith("***") or line == "":
+            if capturing:
+                break
+        if capturing:
+            image_captions.append(line.strip('*').strip())
+    
+    return image_captions
 
 def reset_session_state():
     for key in st.session_state.keys():
