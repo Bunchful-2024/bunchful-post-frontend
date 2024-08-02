@@ -2,8 +2,9 @@ import json
 import os
 import requests
 import streamlit as st
+import services.image_service
 from services.prompts import general_prompt  
-from services.functions import extract_generated_content, transform_to_markdown, extract_title, update_formatted_text
+from services.functions import extract_generated_content, transform_to_markdown, extract_title, extract_image_captions
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -11,6 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo") #os not working so change to this temporarily
 model = genai.GenerativeModel('gemini-1.5-pro')
+pexels_api = services.image_service.PexelsAPI(os.environ.get("PEXELS_API_KEY"))
 
 # Access environment variables
 fb_page_id = os.environ.get('FB_PAGE_ID')
@@ -36,6 +38,8 @@ if 'formatted_text' not in st.session_state:
     st.session_state.formatted_text = ""
 if 'edited_text' not in st.session_state:
     st.session_state.edited_text = ""
+if 'image_captions' not in st.session_state:
+    st.session_state.image_captions = []
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -135,7 +139,8 @@ if generate_button:
             # Accessing the content from the response object
             generated_result = response.text
             st.session_state.generated_text = extract_generated_content(response.text)
-            print(generated_result) #for testing
+            st.session_state.image_captions = extract_image_captions(response.text)
+            #print(generated_result) #for testing
             generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
@@ -159,7 +164,19 @@ if generate_button:
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
+ # Debug: Check if image captions are available
+if st.session_state.image_captions:
+    st.markdown("#### Image Section")
+    for image_caption in st.session_state.image_captions:
+        try:
+            # Debug: Log the image caption being processed
+            image_result = pexels_api.search_image(image_caption, 1)[0]
+            st.image(image_result, caption=image_caption, use_column_width=True)
+        except Exception as e:
+            st.error(f"An error occurred while fetching images: {e}")
+
 if st.session_state.generated_text:
+
     st.markdown("### Edit Section")
     st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
     st.session_state.edited_text = st.text_area("Prompt", value=st.session_state.generated_text, height=200)
@@ -236,7 +253,3 @@ This section allows you to customize your content with the help of AI.
 - Click the 'Generate' button to generate the content.
 """)
 
-# st.markdown("#### Image")
-# image_result = pexels_api.search_image(' '.join(topics),1)[0]
-# st.write(image_result)
-# st.image(image_result, caption='Image from Pexels', use_column_width=True)
