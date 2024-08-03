@@ -22,8 +22,8 @@ Transparency is key here—ensure that these hypothetical situations are present
 The introduction of the article should identify the problem the buyer has and contextualize who they are. 
 It should also outline what the reader will get and learn from reading the post, and the payoff that will come with completing the content.
 Vary the length of the paragraphs and sentences in these writings. Look for opportunities to create punchy, incisive moments to land your points, while at other times produce paragraphs that are 2-4 sentences as needed.
-Correlate 3 images to the content, marking the images like this [Image 1], [Image 2], [Image 3] in the article.
-Each image should have a caption that is 8 words or less, do not use symbols, do not start with "Photo of" or "Image of" in the sentences.
+Correlate 3 images to the content, marking the images like this [Image 1], [Image 2], [Image 3].
+The image description should be 10 words or less, do not use symbols.
 
 
 

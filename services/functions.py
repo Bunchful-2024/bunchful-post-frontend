@@ -47,19 +47,17 @@ def extract_title(markdown_string):
 #function to extract the sentences for Pexels retrieval
 def extract_image_captions(text):
     lines = text.split('\n')
-    capturing = False
     image_captions = []
-    
+
     for line in lines:
         line = line.strip()
-        if line == "**Images:**":
-            capturing = True
-            continue
-        if line.startswith("***") or line == "":
-            if capturing:
-                break
-        if capturing:
-            image_captions.append(line.strip('*').strip())
+        if line.startswith("[Image"):
+            # Extract the caption text within the square brackets
+            start = line.find('[') + 1
+            end = line.find(']')
+            if start != -1 and end != -1:
+                caption = line[start:end]
+                image_captions.append(caption)
     
     return image_captions
 
