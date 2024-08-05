@@ -2,6 +2,7 @@ import json
 import os
 import requests
 import streamlit as st
+import re
 import services.image_service
 from services.prompts import general_prompt  
 from services.functions import extract_generated_content, transform_to_markdown, extract_title, extract_image_captions
@@ -40,6 +41,8 @@ if 'edited_text' not in st.session_state:
     st.session_state.edited_text = ""
 if 'image_captions' not in st.session_state:
     st.session_state.image_captions = []
+if 'image_mapping' not in st.session_state:
+    st.session_state.image_mapping = {}
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -140,14 +143,44 @@ if generate_button:
             generated_result = response.text
             st.session_state.generated_text = extract_generated_content(response.text)
             st.session_state.image_captions = extract_image_captions(response.text)
-            #print(generated_result) #for testing
+            print(st.session_state.image_captions) #for testing
             generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
+
+            # Insert image links to the generated content
+            # Adjust the regular expression to match the placeholders
+            pattern = r'\[Image \d+: .*?\]'
+
+            # Split the content by the placeholders
+            parts = re.split(pattern, generated_result)
+
+            # Find all placeholders
+            placeholders = re.findall(pattern, generated_result)
+            count = 0
+            for image_caption in st.session_state.image_captions:
+                try:
+                    # Debug: Log the image caption being processed
+                    image_result = pexels_api.search_image(image_caption, 1)[0]
+                    print(image_result) #for testing
+                    st.session_state.image_mapping[image_caption] = image_result
+                    count+=1
+                except Exception as e:
+                        st.error(f"An error occurred while fetching images: {e}")
+            
             
             # Display results
             st.markdown(f"### Generated Result for {platform}:")
-            st.write(generated_result)
+            # st.write(generated_result)
+            # Iterate over the parts and display text and images
+            for i, part in enumerate(parts):
+                st.write(part)
+                if i < len(placeholders):
+                    placeholder = placeholders[i]
+                    description = placeholder[1:-1]  # Remove the square brackets
+                    image_url = st.session_state.image_mapping.get(description)
+                    if image_url:
+                        st.image(image_url, caption=description, use_column_width=True)
 
             # Display character counts and cost projection
             st.markdown("### Writer AI Cost projection per article")
@@ -164,16 +197,16 @@ if generate_button:
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
- # Debug: Check if image captions are available
-if st.session_state.image_captions:
-    st.markdown("#### Image Section")
-    for image_caption in st.session_state.image_captions:
-        try:
-            # Debug: Log the image caption being processed
-            image_result = pexels_api.search_image(image_caption, 1)[0]
-            st.image(image_result, caption=image_caption, use_column_width=True)
-        except Exception as e:
-            st.error(f"An error occurred while fetching images: {e}")
+# Debug: Check if image captions are available
+# if st.session_state.image_captions:
+#     st.markdown("#### Image Section")
+#     for image_caption in st.session_state.image_captions:
+#         try:
+#             # Debug: Log the image caption being processed
+#             image_result = pexels_api.search_image(image_caption, 1)[0]
+#             st.image(image_result, caption=image_caption, use_column_width=True)
+#         except Exception as e:
+#             st.error(f"An error occurred while fetching images: {e}")
 
 if st.session_state.generated_text:
 
