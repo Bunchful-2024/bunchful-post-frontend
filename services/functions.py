@@ -1,5 +1,6 @@
 # helper functions
 import streamlit as st
+import re
 
 # function to extract the generated content from the output string
 def extract_generated_content(content):
@@ -27,6 +28,17 @@ def transform_to_markdown(input_string):
     transformed_string = input_string.replace("##", "#")
     # Specify the new line character
     transformed_string = transformed_string.replace("\n", "\n\n ")
+    # Define the image to markdown conversion function
+    def image_to_markdown(match):
+        full_caption = match.group(0)  # The entire match, including "Image X: Caption"
+        caption = match.group(1)       # The actual caption text
+        # Fetch the corresponding image link from the dictionary
+        image_link = st.session_state.image_mapping.get(full_caption, "Image Link")  # Default to "Image Link" if full_caption not found
+        return f"![{caption}]({image_link})"
+    
+    # Replace "[Image X: Caption]" with "![Caption](Image Link)"
+    transformed_string = re.sub(r"\[Image \d+: (.+?)\]", image_to_markdown, transformed_string)
+    
     return transformed_string
 
 def update_formatted_text():

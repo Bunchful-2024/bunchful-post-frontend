@@ -172,6 +172,7 @@ if generate_button:
             # Display results
             st.markdown(f"### Generated Result for {platform}:")
             # st.write(generated_result)
+            print(st.session_state.image_mapping)
             # Iterate over the parts and display text and images
             for i, part in enumerate(parts):
                 st.write(part)
