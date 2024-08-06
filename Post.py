@@ -2,15 +2,23 @@ import json
 import os
 import requests
 import streamlit as st
+import re
+import services.image_service
 from services.prompts import general_prompt  
-from services.functions import extract_generated_content, extract_title, transform_to_markdown
+from services.functions import extract_generated_content, transform_to_markdown, extract_title, extract_image_captions
 import google.generativeai as genai
 from dotenv import load_dotenv
 
 # Load and set up environment variables
 load_dotenv()
-genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo")
+genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo") #os not working so change to this temporarily
 model = genai.GenerativeModel('gemini-1.5-pro')
+pexels_api = services.image_service.PexelsAPI(os.environ.get("PEXELS_API_KEY"))
+
+# Access environment variables
+fb_page_id = os.environ.get('FB_PAGE_ID')
+fb_access_token = os.environ.get('FB_PAGE_ACCESS_TOKEN')
+fb_access_token = str(fb_access_token)
 
 # Set up initial session state
 if 'content_type' not in st.session_state:
@@ -25,12 +33,16 @@ if 'topic' not in st.session_state:
     st.session_state.topic = ""
 if 'char_limit' not in st.session_state:
     st.session_state.char_limit = 1500
-if 'edited_content' not in st.session_state:
-    st.session_state.edited_content = ""
 if 'generated_text' not in st.session_state:
     st.session_state.generated_text = ""
 if 'formatted_text' not in st.session_state:
     st.session_state.formatted_text = ""
+if 'edited_text' not in st.session_state:
+    st.session_state.edited_text = ""
+if 'image_captions' not in st.session_state:
+    st.session_state.image_captions = []
+if 'image_mapping' not in st.session_state:
+    st.session_state.image_mapping = {}
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -38,7 +50,7 @@ st.caption("Welcome to Bunchful Post! Manage your content here.")
 
 # Step 1: Enter Topic
 st.markdown("#### Step 1: Enter Topic")
-st.session_state.topic = st.text_input("Enter your topic here:")
+st.session_state.topic = st.text_area("What are you writing today?")
 
 # Step 2: Enter Keywords
 st.markdown("#### Step 2: Enter Keywords")
@@ -55,7 +67,7 @@ st.session_state.content_type = st.selectbox("Select your content type:", conten
 content_to_platform = {
     "Social Media Post": ["LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "Youtube", "TikTok", "Threads"],
     "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
-    "Articles": ["Website", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Substack", "Ghost", "Write.as"],
+    "Articles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
     "Blogs": ["Website", "Tumblr"],
     "Ads": ["Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
     "Case Study": [],
@@ -107,7 +119,8 @@ char_limit = st.slider("Select Character Limit", min_value=100, max_value=3000, 
 # Generate button
 generate_button = st.button("Generate")
 
-# Generate content on button click
+# Mimic Generate Button Logic/Put Gemini logic here
+# Have to fix the disappearing generated text issue
 if generate_button:
     try:
         # Process each selected platform
@@ -129,13 +142,46 @@ if generate_button:
             # Accessing the content from the response object
             generated_result = response.text
             st.session_state.generated_text = extract_generated_content(response.text)
+            st.session_state.image_captions = extract_image_captions(response.text)
+            print(st.session_state.image_captions) #for testing
             generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
+
+            # Insert image links to the generated content
+            # Adjust the regular expression to match the placeholders
+            pattern = r'\[Image \d+: .*?\]'
+
+            # Split the content by the placeholders
+            parts = re.split(pattern, generated_result)
+
+            # Find all placeholders
+            placeholders = re.findall(pattern, generated_result)
+            count = 0
+            for image_caption in st.session_state.image_captions:
+                try:
+                    # Debug: Log the image caption being processed
+                    image_result = pexels_api.search_image(image_caption, 1)[0]
+                    print(image_result) #for testing
+                    st.session_state.image_mapping[image_caption] = image_result
+                    count+=1
+                except Exception as e:
+                        st.error(f"An error occurred while fetching images: {e}")
+            
             
             # Display results
             st.markdown(f"### Generated Result for {platform}:")
-            st.write(generated_result)
+            # st.write(generated_result)
+            print(st.session_state.image_mapping)
+            # Iterate over the parts and display text and images
+            for i, part in enumerate(parts):
+                st.write(part)
+                if i < len(placeholders):
+                    placeholder = placeholders[i]
+                    description = placeholder[1:-1]  # Remove the square brackets
+                    image_url = st.session_state.image_mapping.get(description)
+                    if image_url:
+                        st.image(image_url, caption=description, use_column_width=True)
 
             # Display character counts and cost projection
             st.markdown("### Writer AI Cost projection per article")
@@ -146,28 +192,66 @@ if generate_button:
             token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
             st.write(f"Estimated cost: ${token_cost:.6f}")
 
-            st.markdown("### Edit Section")
-            edited_text = st.text_area("Edit Generated Content", value=st.session_state.generated_text, height=300)
-
-            st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
-            
-            # # Apply Changes button
-            # if st.button("Apply Changes"):
-            #     st.markdown(f"### Edited Article for {platform}:")
-            #     st.write(st.session_state.edited_content)
 
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
+# Debug: Check if image captions are available
+# if st.session_state.image_captions:
+#     st.markdown("#### Image Section")
+#     for image_caption in st.session_state.image_captions:
+#         try:
+#             # Debug: Log the image caption being processed
+#             image_result = pexels_api.search_image(image_caption, 1)[0]
+#             st.image(image_result, caption=image_caption, use_column_width=True)
+#         except Exception as e:
+#             st.error(f"An error occurred while fetching images: {e}")
+
 if st.session_state.generated_text:
-    if st.session_state.platforms == ['Medium']:
+
+    st.markdown("### Edit Section")
+    st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
+    st.session_state.edited_text = st.text_area("Prompt", value=st.session_state.generated_text, height=200)
+    print(st.session_state.formatted_text) #for testing
+
+    if st.session_state.platforms == ['Facebook']:
+        st.subheader("Step 2: Publish to Facebook")
+        publish_button = st.button("Publish")
+        #publish content to FB page
+        if publish_button:
+            # Facebook API endpoint for posting to a page
+            fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
+
+            payload = {
+                'message': st.session_state.generated_text,
+                'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
+                # 'access_token': fb_access_token cannot work why
+            }
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            # Debugging: Use st.write to display the payload and URL
+            st.write("Facebook API URL:", fb_api_url)
+            st.write("Payload:", payload)
+            st.write("Headers:", headers)
+
+            response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+
+            if response.status_code == 200:
+                st.success("Post published successfully on Facebook!")
+            else:
+                st.error(f"Failed to publish post: {response.text}")
+    elif st.session_state.platforms == ['Medium']:
         publish_button = st.button("Publish")
         #publish content to Medium
         if publish_button:
-            # Medium API endpoint for posting https://api.medium.com/v1/users/{author-id}/posts
-            medium_url = f"https://api.medium.com/v1/users/15a8c1b1e20b396993149f736046be6763fcf123fde47a200640f6cd43c901583/posts"
+            #transform the final text into markdown format
+            st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
+            # Medium API endpoint for posting
+            medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
 
             payload = json.dumps({
                 "title": extract_title(st.session_state.formatted_text),
@@ -176,10 +260,9 @@ if st.session_state.generated_text:
                 "publishStatus": "public"
             })
 
-            # 'Authorization': 'Bearer {access-token}',
             headers = {
                 'Host': 'api.medium.com',
-                'Authorization': 'Bearer 22914d8ee9fda4b02d50167ceac3c2052463e356671a38481054159fa0bca6745',
+                'Authorization': 'Bearer 2958656ad24671bca553257e68aac2a094b7bf62ebd268ac0c7c495eba1ea4291',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Accept-Charset': 'utf-8',
@@ -191,14 +274,16 @@ if st.session_state.generated_text:
                 st.success("Post published successfully on Medium!")
             else:
                 st.error(f"Failed to publish post: {response.text}")
-    
+
+
 # Sidebar for guidance
 st.sidebar.title("Need Help?")
 st.sidebar.caption("Tips for using the tool.")
 st.sidebar.markdown("""
 ## Step 1. Content Curation
 This section allows you to customize your content with the help of AI.
-  - Select the Platform you want to write for. You can select multiple topics.
-  - Enter your Topic in the text area.
-  - Click the 'Generate' button to generate the content.
+- Select the Platform you want to write for. You can select multiple platforms.
+- Enter your Topic in the text area.
+- Click the 'Generate' button to generate the content.
 """)
+

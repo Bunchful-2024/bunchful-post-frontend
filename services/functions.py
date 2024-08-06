@@ -1,5 +1,9 @@
 # helper functions
 import streamlit as st
+<<<<<<< HEAD
+=======
+import re
+>>>>>>> 66306312df464a8fe89d2972664f72a2f9b6bba2
 
 # function to extract the generated content from the output string
 def extract_generated_content(content):
@@ -27,8 +31,27 @@ def transform_to_markdown(input_string):
     transformed_string = input_string.replace("##", "#")
     # Specify the new line character
     transformed_string = transformed_string.replace("\n", "\n\n ")
+<<<<<<< HEAD
     return transformed_string
 
+=======
+    # Define the image to markdown conversion function
+    def image_to_markdown(match):
+        full_caption = match.group(0).strip("[]")  # The entire match, including "Image X: Caption"
+        caption = match.group(1)       # The actual caption text
+        # Fetch the corresponding image link from the dictionary
+        image_link = st.session_state.image_mapping.get(full_caption, "Image Link")  # Default to "Image Link" if full_caption not found
+        return f"![{caption}]({image_link})"
+    
+    # Replace "[Image X: Caption]" with "![Caption](Image Link)"
+    transformed_string = re.sub(r"\[Image \d+: (.+?)\]", image_to_markdown, transformed_string)
+    
+    return transformed_string
+
+def update_formatted_text():
+    st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
+
+>>>>>>> 66306312df464a8fe89d2972664f72a2f9b6bba2
 def extract_title(markdown_string):
     # Split the input string by the specified new line character
     lines = markdown_string.split("\\n")
@@ -41,6 +64,25 @@ def extract_title(markdown_string):
     # If no title found, return None
     return None
 
+<<<<<<< HEAD
+=======
+#function to extract the sentences for Pexels retrieval
+def extract_image_captions(text):
+    lines = text.split('\n')
+    image_captions = []
+
+    for line in lines:
+        line = line.strip()
+        if line.startswith("[Image"):
+            # Extract the caption text within the square brackets
+            start = line.find('[') + 1
+            end = line.find(']')
+            if start != -1 and end != -1:
+                caption = line[start:end]
+                image_captions.append(caption)
+    
+    return image_captions
+>>>>>>> 66306312df464a8fe89d2972664f72a2f9b6bba2
 
 def reset_session_state():
     for key in st.session_state.keys():
