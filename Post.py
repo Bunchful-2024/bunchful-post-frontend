@@ -40,6 +40,10 @@ if 'image_captions' not in st.session_state:
     st.session_state.image_captions = []
 if 'image_mapping' not in st.session_state:
     st.session_state.image_mapping = {}
+if 'parts' not in st.session_state:
+    st.session_state.parts = []
+if 'placeholders' not in st.session_state:
+    st.session_state.placeholders = []
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -150,10 +154,10 @@ if generate_button:
             pattern = r'\[Image \d+: .*?\]'
 
             # Split the content by the placeholders
-            parts = re.split(pattern, generated_result)
+            st.session_state.parts = re.split(pattern, generated_result)
 
             # Find all placeholders
-            placeholders = re.findall(pattern, generated_result)
+            st.session_state.placeholders = re.findall(pattern, generated_result)
             count = 0
             for image_caption in st.session_state.image_captions:
                 try:
