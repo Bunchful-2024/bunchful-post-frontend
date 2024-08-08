@@ -43,6 +43,12 @@ if 'image_captions' not in st.session_state:
     st.session_state.image_captions = []
 if 'image_mapping' not in st.session_state:
     st.session_state.image_mapping = {}
+if 'image_1' not in st.session_state:
+    st.session_state.image_1 = ""
+if 'image_2' not in st.session_state:
+    st.session_state.image_1 = ""
+if 'image_3' not in st.session_state:
+    st.session_state.image_1 = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -181,7 +187,13 @@ if generate_button:
                     description = placeholder[1:-1]  # Remove the square brackets
                     image_url = st.session_state.image_mapping.get(description)
                     if image_url:
-                        st.image(image_url, caption=description, use_column_width=True)
+                        st.session_state[f"image_{i}"] = image_url
+                        st.image(st.session_state[f"image_{i}"], caption=description, use_column_width=True)
+                        st.button(
+                            f"Regenerate Image {i+1}",
+                            key=f"regen_{i+1}",
+                            on_click=pexels_api.regenerate_image(i),
+                        )
 
             # Display character counts and cost projection
             st.markdown("### Writer AI Cost projection per article")
