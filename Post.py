@@ -1,5 +1,4 @@
 import json
-import os
 import requests
 import streamlit as st
 import re
@@ -10,7 +9,6 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 
 # Load and set up environment variables
-load_dotenv()
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"]) 
 model = genai.GenerativeModel('gemini-1.5-pro')
 pexels_api = services.image_service.PexelsAPI(st.secrets["PEXELS_API_KEY"])
