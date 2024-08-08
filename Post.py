@@ -209,7 +209,7 @@ if st.session_state.generated_text:
 
     st.markdown("### Edit Section")
     st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
-    st.session_state.edited_text = st.text_area("Prompt", value=st.session_state.generated_text, height=200)
+    st.session_state.edited_text = st.text_area("Edit your content:", value=st.session_state.generated_text, height=500)
     print(st.session_state.formatted_text) #for testing
 
     # if st.session_state.platforms == ['Facebook']:
