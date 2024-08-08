@@ -140,7 +140,7 @@ if generate_button:
             generated_result = response.text
             st.session_state.generated_text = extract_generated_content(response.text)
             st.session_state.image_captions = extract_image_captions(response.text)
-            print(st.session_state.image_captions) #for testing
+            print(generated_result) #for testing
             generated_char_count = len(st.session_state.generated_text)
             input_tokens = response.usage_metadata.prompt_token_count
             output_tokens = response.usage_metadata.candidates_token_count
@@ -169,7 +169,6 @@ if generate_button:
             # Display results
             st.markdown(f"### Generated Result for {platform}:")
             # st.write(generated_result)
-            print(st.session_state.image_mapping)
             # Iterate over the parts and display text and images
             for i, part in enumerate(parts):
                 st.write(part)
