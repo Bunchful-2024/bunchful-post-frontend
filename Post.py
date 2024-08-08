@@ -44,6 +44,10 @@ if 'parts' not in st.session_state:
     st.session_state.parts = []
 if 'placeholders' not in st.session_state:
     st.session_state.placeholders = []
+# the dictionary to store the generated response
+# format {Medium: {prompt_char_count: 100, generated_char_count: 200, input_tokens: 100, output_tokens: 200}} 
+if 'generated_response' not in st.session_state:
+    st.session_state.generated_response = {}
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -126,49 +130,24 @@ if generate_button:
     try:
         # Process each selected platform
         for platform in st.session_state.platforms:
+            # check if the platform is already in the generated response dictionary
+            if platform not in st.session_state.generated_response:
+                st.session_state.generated_response[platform] = {}
             # Use the specified character limit if it falls within the platform's default range
             default_limit = platform_character_limits.get(platform, 1500)
             character_limit = min(default_limit, char_limit)
 
-            # Generate prompt based on the platform and character limit
+            # Generate prompt based on the platform and character limit and store prompt length (characters count)
             prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_state.keyword)
+            st.session_state.generated_response[platform]['prompt_char_count'] = len(prompt)
 
-            # Calculate estimated token count
-            prompt_tokens = len(prompt.split())
-            prompt_char_count = len(prompt)
-
-            # Generate content using the model instance
+            # Generate content using the model instance and store the response object
             response = model.generate_content(prompt)
+            st.session_state.generated_response[platform]['response'] = response
 
-            # Accessing the content from the response object
-            generated_result = response.text
-            st.session_state.generated_text = extract_generated_content(response.text)
-            st.session_state.image_captions = extract_image_captions(response.text)
-            print(generated_result) #for testing
-            generated_char_count = len(st.session_state.generated_text)
-            input_tokens = response.usage_metadata.prompt_token_count
-            output_tokens = response.usage_metadata.candidates_token_count
-
-            # Insert image links to the generated content
-            # Adjust the regular expression to match the placeholders
-            pattern = r'\[Image \d+: .*?\]'
-
-            # Split the content by the placeholders
-            st.session_state.parts = re.split(pattern, generated_result)
-
-            # Find all placeholders
-            st.session_state.placeholders = re.findall(pattern, generated_result)
-            count = 0
-            for image_caption in st.session_state.image_captions:
-                try:
-                    # Debug: Log the image caption being processed
-                    image_result = pexels_api.search_image(image_caption, 1)[0]
-                    print(image_result) #for testing
-                    st.session_state.image_mapping[image_caption] = image_result
-                    count+=1
-                except Exception as e:
-                        st.error(f"An error occurred while fetching images: {e}")
-            
+            # Store the input and output token counts with Gemini methods
+            st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
+            st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
             
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
@@ -176,27 +155,56 @@ if generate_button:
         st.error(f"An error occurred: {e}")
 
 # Display results
-if st.session_state.parts and st.session_state.placeholders:
-    st.markdown(f"### Generated Result for {platform}:")
-    # st.write(generated_result)
-    # Iterate over the parts and display text and images
-    for i, part in enumerate(st.session_state.parts):
-        st.write(part)
-        if i < len(st.session_state.placeholders):
-            placeholder = st.session_state.placeholders[i]
-            description = placeholder[1:-1]  # Remove the square brackets
-            image_url = st.session_state.image_mapping.get(description)
-            if image_url:
-                st.image(image_url, caption=description, use_column_width=True)
+if st.session_state.generated_response:
+    for platform in st.session_state.platforms:
+        platform_dic = st.session_state.generated_response[platform]
+        response_obj = platform_dic['response']
+        # Accessing the content from the response object
+        generated_result = response_obj.text
+        st.session_state.generated_text = extract_generated_content(response_obj.text)
+        st.session_state.image_captions = extract_image_captions(response_obj.text)
+        print(generated_result) #for testing
 
-    # Display character counts and cost projection
-    st.markdown("### Writer AI Cost projection per article")
-    st.write(f"Prompt Character Count: {prompt_char_count}")
-    st.write(f"Generated Content Character Count: {generated_char_count}")
-    st.write(f"Input tokens: {input_tokens}")  # Input token count
-    st.write(f"Output tokens: {output_tokens}")  # Output token count
-    token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
-    st.write(f"Estimated cost: ${token_cost:.6f}")
+        # Insert image links to the generated content
+        # Adjust the regular expression to match the placeholders
+        pattern = r'\[Image \d+: .*?\]'
+
+        # Split the content by the placeholders
+        parts = re.split(pattern, generated_result)
+
+        # Find all placeholders
+        placeholders = re.findall(pattern, generated_result)
+        count = 0
+        for image_caption in st.session_state.image_captions:
+            try:
+                # Debug: Log the image caption being processed
+                image_result = pexels_api.search_image(image_caption, 1)[0]
+                print(image_result) #for testing
+                st.session_state.image_mapping[image_caption] = image_result
+                count+=1
+            except Exception as e:
+                st.error(f"An error occurred while fetching images: {e}")
+
+        st.markdown(f"### Generated Result for {platform}:")
+        # st.write(generated_result)
+        # Iterate over the parts and display text and images
+        for i, part in enumerate(parts):
+            st.write(part)
+            if i < len(placeholders):
+                placeholder = placeholders[i]
+                description = placeholder[1:-1]  # Remove the square brackets
+                image_url = st.session_state.image_mapping.get(description)
+                if image_url:
+                    st.image(image_url, caption=description, use_column_width=True)
+
+        # Display character counts and cost projection
+        st.markdown("### Writer AI Cost projection per article")
+        st.write(f"Prompt Character Count: {platform_dic['prompt_char_count']}")
+        st.write(f"Generated Content Character Count: {len(st.session_state.generated_text)}")
+        st.write(f"Input tokens: {platform_dic['input_tokens']}")  # Input token count
+        st.write(f"Output tokens: {platform_dic['output_tokens']}")  # Output token count
+        token_cost = platform_dic['input_tokens'] * 0.0000075 + platform_dic['output_tokens'] * 0.0000225
+        st.write(f"Estimated cost: ${token_cost:.6f}")
 
 # Debug: Check if image captions are available
 # if st.session_state.image_captions:
