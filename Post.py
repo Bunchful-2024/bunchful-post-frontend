@@ -6,7 +6,6 @@ import services.image_service
 from services.prompts import general_prompt  
 from services.functions import extract_generated_content, transform_to_markdown, extract_title, extract_image_captions
 import google.generativeai as genai
-from dotenv import load_dotenv
 
 # Load and set up environment variables
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"]) 
