@@ -262,10 +262,22 @@ if st.session_state.generated_text:
             if not st.session_state.medium_token:
                 st.error("Please enter your Medium Access Token in the sidebar.")
             else:
-                #transform the final text into markdown format
+                # transform the final text into markdown format
                 st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
+                # get Medium author ID
+                payload = {}
+                headers = {
+                    'Host': 'api.medium.com',
+                    'Authorization': f"Bearer {st.session_state.medium_token}",
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+
+                response = requests.request("GET", "https://api.medium.com/v1/me", headers=headers, data=payload)
+                author_id = response.json()['data']['id']
+
                 # Medium API endpoint for posting
-                medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
+                medium_url = f"https://api.medium.com/v1/users/{author_id}/posts"
 
                 payload = json.dumps({
                     "title": extract_title(st.session_state.formatted_text),
