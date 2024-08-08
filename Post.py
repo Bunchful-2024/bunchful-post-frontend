@@ -48,6 +48,8 @@ if 'placeholders' not in st.session_state:
 # format {Medium: {prompt_char_count: 100, generated_char_count: 200, input_tokens: 100, output_tokens: 200}} 
 if 'generated_response' not in st.session_state:
     st.session_state.generated_response = {}
+if 'medium_token' not in st.session_state:
+    st.session_state.medium_token = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -257,42 +259,48 @@ if st.session_state.generated_text:
         publish_button = st.button("Publish")
         #publish content to Medium
         if publish_button:
-            #transform the final text into markdown format
-            st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
-            # Medium API endpoint for posting
-            medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
-
-            payload = json.dumps({
-                "title": extract_title(st.session_state.formatted_text),
-                "contentFormat": "markdown",
-                "content": st.session_state.formatted_text,
-                "publishStatus": "public"
-            })
-
-            headers = {
-                'Host': 'api.medium.com',
-                'Authorization': 'Bearer 2958656ad24671bca553257e68aac2a094b7bf62ebd268ac0c7c495eba1ea4291',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Accept-Charset': 'utf-8',
-            }
-
-            response = requests.post(medium_url, headers=headers, data=payload)
-
-            if response.status_code == 201:
-                st.success("Post published successfully on Medium!")
+            if not st.session_state.medium_token:
+                st.error("Please enter your Medium Access Token in the sidebar.")
             else:
-                st.error(f"Failed to publish post: {response.text}")
+                #transform the final text into markdown format
+                st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
+                # Medium API endpoint for posting
+                medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
+
+                payload = json.dumps({
+                    "title": extract_title(st.session_state.formatted_text),
+                    "contentFormat": "markdown",
+                    "content": st.session_state.formatted_text,
+                    "publishStatus": "public"
+                })
+
+                headers = {
+                    'Host': 'api.medium.com',
+                    'Authorization': f"Bearer {st.session_state.medium_token}",
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Accept-Charset': 'utf-8',
+                }
+
+                response = requests.post(medium_url, headers=headers, data=payload)
+
+                if response.status_code == 201:
+                    st.success("Post published successfully on Medium!")
+                else:
+                    st.error(f"Failed to publish post: {response.text}")
 
 
 # Sidebar for guidance
-st.sidebar.title("Need Help?")
-st.sidebar.caption("Tips for using the tool.")
-st.sidebar.markdown("""
-## Step 1. Content Curation
-This section allows you to customize your content with the help of AI.
-- Select the Platform you want to write for. You can select multiple platforms.
-- Enter your Topic in the text area.
-- Click the 'Generate' button to generate the content.
-""")
+st.sidebar.title("Set up")
+st.sidebar.write("Enter your Medium Access Token")
+st.session_state.medium_token = st.sidebar.text_input("Medium Access Token")
+
+# st.sidebar.caption("Tips for using the tool.")
+# st.sidebar.markdown("""
+# ## Step 1. Content Curation
+# This section allows you to customize your content with the help of AI.
+# - Select the Platform you want to write for. You can select multiple platforms.
+# - Enter your Topic in the text area.
+# - Click the 'Generate' button to generate the content.
+# """)
 
