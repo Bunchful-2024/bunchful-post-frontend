@@ -11,14 +11,14 @@ from dotenv import load_dotenv
 
 # Load and set up environment variables
 load_dotenv()
-genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo") #os not working so change to this temporarily
+genai.configure(api_key=st.secrets["GENAI_API_KEY"]) 
 model = genai.GenerativeModel('gemini-1.5-pro')
-pexels_api = services.image_service.PexelsAPI(os.environ.get("PEXELS_API_KEY"))
+pexels_api = services.image_service.PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
-# Access environment variables
-fb_page_id = os.environ.get('FB_PAGE_ID')
-fb_access_token = os.environ.get('FB_PAGE_ACCESS_TOKEN')
-fb_access_token = str(fb_access_token)
+# # Access environment variables
+# fb_page_id = os.environ.get('FB_PAGE_ID')
+# fb_access_token = os.environ.get('FB_PAGE_ACCESS_TOKEN')
+# fb_access_token = str(fb_access_token)
 
 # Set up initial session state
 if 'content_type' not in st.session_state:
@@ -216,35 +216,35 @@ if st.session_state.generated_text:
     st.session_state.edited_text = st.text_area("Prompt", value=st.session_state.generated_text, height=200)
     print(st.session_state.formatted_text) #for testing
 
-    if st.session_state.platforms == ['Facebook']:
-        st.subheader("Step 2: Publish to Facebook")
-        publish_button = st.button("Publish")
-        #publish content to FB page
-        if publish_button:
-            # Facebook API endpoint for posting to a page
-            fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
+    # if st.session_state.platforms == ['Facebook']:
+    #     st.subheader("Step 2: Publish to Facebook")
+    #     publish_button = st.button("Publish")
+    #     #publish content to FB page
+    #     if publish_button:
+    #         # Facebook API endpoint for posting to a page
+    #         fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
 
-            payload = {
-                'message': st.session_state.generated_text,
-                'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
-                # 'access_token': fb_access_token cannot work why
-            }
-            headers = {
-                'Content-Type': 'application/json'
-            }
+    #         payload = {
+    #             'message': st.session_state.generated_text,
+    #             'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
+    #             # 'access_token': fb_access_token cannot work why
+    #         }
+    #         headers = {
+    #             'Content-Type': 'application/json'
+    #         }
 
-            # Debugging: Use st.write to display the payload and URL
-            st.write("Facebook API URL:", fb_api_url)
-            st.write("Payload:", payload)
-            st.write("Headers:", headers)
+    #         # Debugging: Use st.write to display the payload and URL
+    #         st.write("Facebook API URL:", fb_api_url)
+    #         st.write("Payload:", payload)
+    #         st.write("Headers:", headers)
 
-            response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+    #         response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
 
-            if response.status_code == 200:
-                st.success("Post published successfully on Facebook!")
-            else:
-                st.error(f"Failed to publish post: {response.text}")
-    elif st.session_state.platforms == ['Medium']:
+    #         if response.status_code == 200:
+    #             st.success("Post published successfully on Facebook!")
+    #         else:
+    #             st.error(f"Failed to publish post: {response.text}")
+    if st.session_state.platforms == ['Medium']:
         publish_button = st.button("Publish")
         #publish content to Medium
         if publish_button:
