@@ -170,33 +170,33 @@ if generate_button:
                         st.error(f"An error occurred while fetching images: {e}")
             
             
-            # Display results
-            st.markdown(f"### Generated Result for {platform}:")
-            # st.write(generated_result)
-            # Iterate over the parts and display text and images
-            for i, part in enumerate(parts):
-                st.write(part)
-                if i < len(placeholders):
-                    placeholder = placeholders[i]
-                    description = placeholder[1:-1]  # Remove the square brackets
-                    image_url = st.session_state.image_mapping.get(description)
-                    if image_url:
-                        st.image(image_url, caption=description, use_column_width=True)
-
-            # Display character counts and cost projection
-            st.markdown("### Writer AI Cost projection per article")
-            st.write(f"Prompt Character Count: {prompt_char_count}")
-            st.write(f"Generated Content Character Count: {generated_char_count}")
-            st.write(f"Input tokens: {input_tokens}")  # Input token count
-            st.write(f"Output tokens: {output_tokens}")  # Output token count
-            token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
-            st.write(f"Estimated cost: ${token_cost:.6f}")
-
-
     except AttributeError as e:
         st.error(f"An attribute error occurred: {e}")
     except Exception as e:
         st.error(f"An error occurred: {e}")
+
+# Display results
+if st.session_state.parts and st.session_state.placeholders:
+    st.markdown(f"### Generated Result for {platform}:")
+    # st.write(generated_result)
+    # Iterate over the parts and display text and images
+    for i, part in enumerate(st.session_state.parts):
+        st.write(part)
+        if i < len(st.session_state.placeholders):
+            placeholder = st.session_state.placeholders[i]
+            description = placeholder[1:-1]  # Remove the square brackets
+            image_url = st.session_state.image_mapping.get(description)
+            if image_url:
+                st.image(image_url, caption=description, use_column_width=True)
+
+    # Display character counts and cost projection
+    st.markdown("### Writer AI Cost projection per article")
+    st.write(f"Prompt Character Count: {prompt_char_count}")
+    st.write(f"Generated Content Character Count: {generated_char_count}")
+    st.write(f"Input tokens: {input_tokens}")  # Input token count
+    st.write(f"Output tokens: {output_tokens}")  # Output token count
+    token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
+    st.write(f"Estimated cost: ${token_cost:.6f}")
 
 # Debug: Check if image captions are available
 # if st.session_state.image_captions:
