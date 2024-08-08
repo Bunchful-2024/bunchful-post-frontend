@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Load and set up environment variables
 load_dotenv()
-genai.configure(api_key="AIzaSyA_c1yyDqScWbXBl2TYc6dj-IC54HqrWOo") #os not working so change to this temporarily
+genai.configure(api_key='AIzaSyDlmWF9la0sf0R3Xqfy4mPI5Jrza021q0I') #os not working so change to this temporarily
 model = genai.GenerativeModel('gemini-1.5-pro')
 pexels_api = services.image_service.PexelsAPI(os.environ.get("PEXELS_API_KEY"))
 
@@ -251,7 +251,7 @@ if st.session_state.generated_text:
             #transform the final text into markdown format
             st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
             # Medium API endpoint for posting
-            medium_url = f"https://api.medium.com/v1/users/1980e4756f9f99298a88b228cc6990e0bcc38f9e4fc0a970494f646ee62db46fd/posts"
+            medium_url = f"https://api.medium.com/v1/users/18e4d88f6cb2013fd1a66931822e602323f13653bff36a5b88e5921efbf54eb27/posts"
 
             payload = json.dumps({
                 "title": extract_title(st.session_state.formatted_text),
@@ -262,7 +262,7 @@ if st.session_state.generated_text:
 
             headers = {
                 'Host': 'api.medium.com',
-                'Authorization': 'Bearer 2958656ad24671bca553257e68aac2a094b7bf62ebd268ac0c7c495eba1ea4291',
+                'Authorization': 'Bearer 250eca2f4439ec4efed2e2f02375a192a6965a5492cb60bbcf12cd259c24303df',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Accept-Charset': 'utf-8',
