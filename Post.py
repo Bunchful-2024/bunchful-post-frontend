@@ -9,8 +9,6 @@ import google.generativeai as genai
 
 # Load and set up environment variables
 # genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-genai.configure(api_key=st.session_state.gemini_api_key)  
-model = genai.GenerativeModel('gemini-1.5-pro')
 pexels_api = services.image_service.PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
 # # Access environment variables
@@ -135,6 +133,8 @@ if generate_button:
     if not st.session_state.gemini_api_key:
         st.error("Please enter your Gemini API Key in the sidebar.")
     else:
+        genai.configure(api_key=st.session_state.gemini_api_key)  
+        model = genai.GenerativeModel('gemini-1.5-pro')
         try:
             # Process each selected platform
             for platform in st.session_state.platforms:
