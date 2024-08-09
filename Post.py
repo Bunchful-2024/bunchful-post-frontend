@@ -8,7 +8,8 @@ from services.functions import extract_generated_content, transform_to_markdown,
 import google.generativeai as genai
 
 # Load and set up environment variables
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"]) 
+# genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+genai.configure(api_key=st.session_state.gemini_api_key)  
 model = genai.GenerativeModel('gemini-1.5-pro')
 pexels_api = services.image_service.PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
@@ -309,8 +310,9 @@ if st.session_state.generated_text:
 
 # Sidebar for guidance
 st.sidebar.title("Set up")
-st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
 st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
+st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
+
 
 # st.sidebar.caption("Tips for using the tool.")
 # st.sidebar.markdown("""
