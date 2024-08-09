@@ -50,6 +50,8 @@ if 'generated_response' not in st.session_state:
     st.session_state.generated_response = {}
 if 'medium_token' not in st.session_state:
     st.session_state.medium_token = ""
+if 'gemini_api_key' not in st.session_state:
+    st.session_state.gemini_api_key = ""
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -129,32 +131,35 @@ generate_button = st.button("Generate")
 # Mimic Generate Button Logic/Put Gemini logic here
 # Have to fix the disappearing generated text issue
 if generate_button:
-    try:
-        # Process each selected platform
-        for platform in st.session_state.platforms:
-            # check if the platform is already in the generated response dictionary
-            if platform not in st.session_state.generated_response:
-                st.session_state.generated_response[platform] = {}
-            # Use the specified character limit if it falls within the platform's default range
-            default_limit = platform_character_limits.get(platform, 1500)
-            character_limit = min(default_limit, char_limit)
+    if not st.session_state.gemini_api_key:
+        st.error("Please enter your Gemini API Key in the sidebar.")
+    else:
+        try:
+            # Process each selected platform
+            for platform in st.session_state.platforms:
+                # check if the platform is already in the generated response dictionary
+                if platform not in st.session_state.generated_response:
+                    st.session_state.generated_response[platform] = {}
+                # Use the specified character limit if it falls within the platform's default range
+                default_limit = platform_character_limits.get(platform, 1500)
+                character_limit = min(default_limit, char_limit)
 
-            # Generate prompt based on the platform and character limit and store prompt length (characters count)
-            prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_state.keyword)
-            st.session_state.generated_response[platform]['prompt_char_count'] = len(prompt)
+                # Generate prompt based on the platform and character limit and store prompt length (characters count)
+                prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_state.keyword)
+                st.session_state.generated_response[platform]['prompt_char_count'] = len(prompt)
 
-            # Generate content using the model instance and store the response object
-            response = model.generate_content(prompt)
-            st.session_state.generated_response[platform]['response'] = response
+                # Generate content using the model instance and store the response object
+                response = model.generate_content(prompt)
+                st.session_state.generated_response[platform]['response'] = response
 
-            # Store the input and output token counts with Gemini methods
-            st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
-            st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
-            
-    except AttributeError as e:
-        st.error(f"An attribute error occurred: {e}")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
+                # Store the input and output token counts with Gemini methods
+                st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
+                st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
+                
+        except AttributeError as e:
+            st.error(f"An attribute error occurred: {e}")
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
 
 # Display results
 if st.session_state.generated_response:
@@ -304,8 +309,8 @@ if st.session_state.generated_text:
 
 # Sidebar for guidance
 st.sidebar.title("Set up")
-st.sidebar.write("Enter your Medium Access Token")
-st.session_state.medium_token = st.sidebar.text_input("Medium Access Token")
+st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
+st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
 
 # st.sidebar.caption("Tips for using the tool.")
 # st.sidebar.markdown("""
