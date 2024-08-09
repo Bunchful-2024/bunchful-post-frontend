@@ -29,6 +29,7 @@ The image description should be 10 words or less, do not use symbols.
 
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
+Add a title **Optimal Posting Days and Times (EST):** for this section.
 Make the Content 95 percent or greator human genereated.
 Show the below attributes with the separation line.
 Article Attributes. Bullet these:
