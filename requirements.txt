@@ -74,8 +74,4 @@ typing_extensions==4.12.2
 tzdata==2024.1
 uritemplate==4.1.1
 urllib3==2.2.2
-<<<<<<< HEAD
 yarl==1.9.4
-=======
-yarl==1.9.4
->>>>>>> 66306312df464a8fe89d2972664f72a2f9b6bba2
