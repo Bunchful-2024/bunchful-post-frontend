@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Load and set up environment variables
 load_dotenv()
-genai.configure(api_key='AIzaSyDlmWF9la0sf0R3Xqfy4mPI5Jrza021q0I') #os not working so change to this temporarily
+genai.configure(api_key='') #os not working so change to this temporarily
 model = genai.GenerativeModel('gemini-1.5-pro')
 pexels_api = services.image_service.PexelsAPI(os.environ.get("PEXELS_API_KEY"))
 
