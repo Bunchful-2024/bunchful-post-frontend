@@ -8,13 +8,8 @@ from services.functions import extract_generated_content, transform_to_markdown,
 import google.generativeai as genai
 
 # Load and set up environment variables
-<<<<<<< HEAD
-load_dotenv()
-genai.configure(api_key='') #os not working so change to this temporarily
-=======
 # genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 genai.configure(api_key=st.session_state.gemini_api_key)  
->>>>>>> 4f4e54c25b717447bd0d036c99ef975950bb7775
 model = genai.GenerativeModel('gemini-1.5-pro')
 pexels_api = services.image_service.PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
@@ -46,14 +41,6 @@ if 'image_captions' not in st.session_state:
     st.session_state.image_captions = []
 if 'image_mapping' not in st.session_state:
     st.session_state.image_mapping = {}
-<<<<<<< HEAD
-if 'image_1' not in st.session_state:
-    st.session_state.image_1 = ""
-if 'image_2' not in st.session_state:
-    st.session_state.image_1 = ""
-if 'image_3' not in st.session_state:
-    st.session_state.image_1 = ""
-=======
 if 'parts' not in st.session_state:
     st.session_state.parts = []
 if 'placeholders' not in st.session_state:
@@ -66,7 +53,6 @@ if 'medium_token' not in st.session_state:
     st.session_state.medium_token = ""
 if 'gemini_api_key' not in st.session_state:
     st.session_state.gemini_api_key = ""
->>>>>>> 4f4e54c25b717447bd0d036c99ef975950bb7775
 
 # Title
 st.title("🙌 Bunchful Post")
@@ -146,89 +132,6 @@ generate_button = st.button("Generate")
 # Mimic Generate Button Logic/Put Gemini logic here
 # Have to fix the disappearing generated text issue
 if generate_button:
-<<<<<<< HEAD
-    try:
-        # Process each selected platform
-        for platform in st.session_state.platforms:
-            # Use the specified character limit if it falls within the platform's default range
-            default_limit = platform_character_limits.get(platform, 1500)
-            character_limit = min(default_limit, char_limit)
-
-            # Generate prompt based on the platform and character limit
-            prompt = general_prompt(platform, character_limit, st.session_state.topic, st.session_state.keyword)
-
-            # Calculate estimated token count
-            prompt_tokens = len(prompt.split())
-            prompt_char_count = len(prompt)
-
-            # Generate content using the model instance
-            response = model.generate_content(prompt)
-
-            # Accessing the content from the response object
-            generated_result = response.text
-            st.session_state.generated_text = extract_generated_content(response.text)
-            st.session_state.image_captions = extract_image_captions(response.text)
-            print(st.session_state.image_captions) #for testing
-            generated_char_count = len(st.session_state.generated_text)
-            input_tokens = response.usage_metadata.prompt_token_count
-            output_tokens = response.usage_metadata.candidates_token_count
-
-            # Insert image links to the generated content
-            # Adjust the regular expression to match the placeholders
-            pattern = r'\[Image \d+: .*?\]'
-
-            # Split the content by the placeholders
-            parts = re.split(pattern, generated_result)
-
-            # Find all placeholders
-            placeholders = re.findall(pattern, generated_result)
-            count = 0
-            for image_caption in st.session_state.image_captions:
-                try:
-                    # Debug: Log the image caption being processed
-                    image_result = pexels_api.search_image(image_caption, 1)[0]
-                    print(image_result) #for testing
-                    st.session_state.image_mapping[image_caption] = image_result
-                    count+=1
-                except Exception as e:
-                        st.error(f"An error occurred while fetching images: {e}")
-            
-            
-            # Display results
-            st.markdown(f"### Generated Result for {platform}:")
-            # st.write(generated_result)
-            print(st.session_state.image_mapping)
-            # Iterate over the parts and display text and images
-            for i, part in enumerate(parts):
-                st.write(part)
-                if i < len(placeholders):
-                    placeholder = placeholders[i]
-                    description = placeholder[1:-1]  # Remove the square brackets
-                    image_url = st.session_state.image_mapping.get(description)
-                    if image_url:
-                        st.session_state[f"image_{i}"] = image_url
-                        st.image(st.session_state[f"image_{i}"], caption=description, use_column_width=True)
-                        st.button(
-                            f"Regenerate Image {i+1}",
-                            key=f"regen_{i+1}",
-                            on_click=pexels_api.regenerate_image(i),
-                        )
-
-            # Display character counts and cost projection
-            st.markdown("### Writer AI Cost projection per article")
-            st.write(f"Prompt Character Count: {prompt_char_count}")
-            st.write(f"Generated Content Character Count: {generated_char_count}")
-            st.write(f"Input tokens: {input_tokens}")  # Input token count
-            st.write(f"Output tokens: {output_tokens}")  # Output token count
-            token_cost = input_tokens * 0.0000075 + output_tokens * 0.0000225
-            st.write(f"Estimated cost: ${token_cost:.6f}")
-
-
-    except AttributeError as e:
-        st.error(f"An attribute error occurred: {e}")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-=======
     if not st.session_state.gemini_api_key:
         st.error("Please enter your Gemini API Key in the sidebar.")
     else:
@@ -310,7 +213,6 @@ if st.session_state.generated_response:
         st.write(f"Output tokens: {platform_dic['output_tokens']}")  # Output token count
         token_cost = platform_dic['input_tokens'] * 0.0000075 + platform_dic['output_tokens'] * 0.0000225
         st.write(f"Estimated cost: ${token_cost:.6f}")
->>>>>>> 4f4e54c25b717447bd0d036c99ef975950bb7775
 
 # Debug: Check if image captions are available
 # if st.session_state.image_captions:
@@ -363,35 +265,8 @@ if st.session_state.generated_text:
         publish_button = st.button("Publish")
         #publish content to Medium
         if publish_button:
-<<<<<<< HEAD
-            #transform the final text into markdown format
-            st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
-            # Medium API endpoint for posting
-            medium_url = f"https://api.medium.com/v1/users/18e4d88f6cb2013fd1a66931822e602323f13653bff36a5b88e5921efbf54eb27/posts"
-
-            payload = json.dumps({
-                "title": extract_title(st.session_state.formatted_text),
-                "contentFormat": "markdown",
-                "content": st.session_state.formatted_text,
-                "publishStatus": "public"
-            })
-
-            headers = {
-                'Host': 'api.medium.com',
-                'Authorization': 'Bearer 250eca2f4439ec4efed2e2f02375a192a6965a5492cb60bbcf12cd259c24303df',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Accept-Charset': 'utf-8',
-            }
-
-            response = requests.post(medium_url, headers=headers, data=payload)
-
-            if response.status_code == 201:
-                st.success("Post published successfully on Medium!")
-=======
             if not st.session_state.medium_token:
                 st.error("Please enter your Medium Access Token in the sidebar.")
->>>>>>> 4f4e54c25b717447bd0d036c99ef975950bb7775
             else:
                 # transform the final text into markdown format
                 st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
