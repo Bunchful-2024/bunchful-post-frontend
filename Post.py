@@ -189,11 +189,6 @@ if generate_button:
                     if image_url:
                         st.session_state[f"image_{i}"] = image_url
                         st.image(st.session_state[f"image_{i}"], caption=description, use_column_width=True)
-                        st.button(
-                            f"Regenerate Image {i+1}",
-                            key=f"regen_{i+1}",
-                            on_click=pexels_api.regenerate_image(i),
-                        )
 
             # Display character counts and cost projection
             st.markdown("### Writer AI Cost projection per article")
