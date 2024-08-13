@@ -11,7 +11,7 @@ Formatting:
     - Headings: H2
     - Body Text: Normal font
     - Paragraphs: Vary length for impact
-Add placeholders for up to three affiliate links to be included.
+Add a placeholders for affiliate links to be included.It should be call to action to it. It should be clickbait.
 Please generate text that avoids using formal or overly academic phrases such as 'it is worth noting,' 'furthermore,' 'consequently,' 'in terms of,' 'one may argue,' 'it is imperative,' 'this suggests that,' 'thus,' 'it is evident that,' 'notwithstanding,' 'pertaining to,' 'therein lies,' 'utilize,' 'be advised,' 'hence,' 'indicate,' 'facilitate,' 'subsequently,' 'moreover,' and 'it can be seen that.' 
 
 Aim for a natural, conversational style that sounds like two friends talking at the coffee shop. Use direct, simple language and choose phrases that are commonly used in everyday speech. 

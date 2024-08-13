@@ -195,25 +195,21 @@ if st.session_state.generated_response:
                     st.image(image_url, caption=description, use_column_width=True)
 
         # Display character counts and cost projection
-        st.markdown("### Writer AI Cost projection per article")
+        st.markdown("Gemini Cost projection per article")
         st.write(f"Prompt Character Count: {platform_dic['prompt_char_count']}")
         st.write(f"Generated Content Character Count: {len(st.session_state.generated_text)}")
-        st.write(f"Input tokens: {platform_dic['input_tokens']}")  # Input token count
-        st.write(f"Output tokens: {platform_dic['output_tokens']}")  # Output token count
-        token_cost = platform_dic['input_tokens'] * 0.0000075 + platform_dic['output_tokens'] * 0.0000225
+        # Define pricing for tokens
+        input_token_rate = 0.000035  # Cost per input token
+        output_token_rate = 0.000105  # Cost per output token
+
+        # Calculate the estimated cost based on input and output tokens
+        token_cost = (
+            platform_dic['input_tokens'] * input_token_rate +
+            platform_dic['output_tokens'] * output_token_rate
+        )
         st.write(f"Estimated cost: ${token_cost:.6f}")
 
-# Debug: Check if image captions are available
-# if st.session_state.image_captions:
-#     st.markdown("#### Image Section")
-#     for image_caption in st.session_state.image_captions:
-#         try:
-#             # Debug: Log the image caption being processed
-#             image_result = pexels_api.search_image(image_caption, 1)[0]
-#             st.image(image_result, caption=image_caption, use_column_width=True)
-#         except Exception as e:
-#             st.error(f"An error occurred while fetching images: {e}")
-
+#Editing Section
 if st.session_state.generated_text:
 
     st.markdown("### Edit Section")
@@ -222,34 +218,6 @@ if st.session_state.generated_text:
     st.session_state.edited_text = st.text_area("Edit your content:", value=st.session_state.generated_text, height=500)
     print(st.session_state.formatted_text) #for testing
 
-    # if st.session_state.platforms == ['Facebook']:
-    #     st.subheader("Step 2: Publish to Facebook")
-    #     publish_button = st.button("Publish")
-    #     #publish content to FB page
-    #     if publish_button:
-    #         # Facebook API endpoint for posting to a page
-    #         fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
-
-    #         payload = {
-    #             'message': st.session_state.generated_text,
-    #             'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
-    #             # 'access_token': fb_access_token cannot work why
-    #         }
-    #         headers = {
-    #             'Content-Type': 'application/json'
-    #         }
-
-    #         # Debugging: Use st.write to display the payload and URL
-    #         st.write("Facebook API URL:", fb_api_url)
-    #         st.write("Payload:", payload)
-    #         st.write("Headers:", headers)
-
-    #         response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
-
-    #         if response.status_code == 200:
-    #             st.success("Post published successfully on Facebook!")
-    #         else:
-    #             st.error(f"Failed to publish post: {response.text}")
     if st.session_state.platforms == ['Medium']:
         publish_button = st.button("Publish")
         #publish content to Medium
@@ -301,6 +269,49 @@ if st.session_state.generated_text:
 st.sidebar.title("Set up")
 st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
 st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
+
+
+# Debug: Check if image captions are available
+# if st.session_state.image_captions:
+#     st.markdown("#### Image Section")
+#     for image_caption in st.session_state.image_captions:
+#         try:
+#             # Debug: Log the image caption being processed
+#             image_result = pexels_api.search_image(image_caption, 1)[0]
+#             st.image(image_result, caption=image_caption, use_column_width=True)
+#         except Exception as e:
+#             st.error(f"An error occurred while fetching images: {e}")
+
+
+    # if st.session_state.platforms == ['Facebook']:
+    #     st.subheader("Step 2: Publish to Facebook")
+    #     publish_button = st.button("Publish")
+    #     #publish content to FB page
+    #     if publish_button:
+    #         # Facebook API endpoint for posting to a page
+    #         fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
+
+    #         payload = {
+    #             'message': st.session_state.generated_text,
+    #             'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
+    #             # 'access_token': fb_access_token cannot work why
+    #         }
+    #         headers = {
+    #             'Content-Type': 'application/json'
+    #         }
+
+    #         # Debugging: Use st.write to display the payload and URL
+    #         st.write("Facebook API URL:", fb_api_url)
+    #         st.write("Payload:", payload)
+    #         st.write("Headers:", headers)
+
+    #         response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+
+    #         if response.status_code == 200:
+    #             st.success("Post published successfully on Facebook!")
+    #         else:
+    #             st.error(f"Failed to publish post: {response.text}")
+
 
 
 # st.sidebar.caption("Tips for using the tool.")
