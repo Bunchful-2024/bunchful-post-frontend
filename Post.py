@@ -32,6 +32,7 @@ for key in session_keys:
 genai.configure(api_key=st.session_state.gemini_api_key)
 model = genai.GenerativeModel('gemini-1.5-pro')
 
+
 # Initialize Pexels API
 pexels_api = services.image_service.PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
@@ -124,6 +125,8 @@ if generate_button:
     if not st.session_state.gemini_api_key:
         st.error("Please enter your Gemini API Key in the sidebar.")
     else:
+        genai.configure(api_key=st.session_state.gemini_api_key)  
+        model = genai.GenerativeModel('gemini-1.5-pro')
         try:
             # Process each selected platform
             for platform in st.session_state.platforms:
