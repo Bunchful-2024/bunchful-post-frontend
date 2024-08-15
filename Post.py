@@ -316,13 +316,3 @@ st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
     #             st.error(f"Failed to publish post: {response.text}")
 
 
-
-# st.sidebar.caption("Tips for using the tool.")
-# st.sidebar.markdown("""
-# ## Step 1. Content Curation
-# This section allows you to customize your content with the help of AI.
-# - Select the Platform you want to write for. You can select multiple platforms.
-# - Enter your Topic in the text area.
-# - Click the 'Generate' button to generate the content.
-# """)
-
