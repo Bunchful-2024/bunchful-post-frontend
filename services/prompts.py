@@ -1,7 +1,7 @@
 #predefined prompts for Gemini to use from
 
 #prompt on line 20 are required for text extraction
-def general_prompt(platform, character_limit, topic, keyword,company_name,hashtags):
+def article(platform, character_limit, topic, keyword,company_name,hashtags):
     return f"""
 Create a {platform} article that highlights the significance of {topic} using a clickbait-style title and focusing on {keyword}. The article should adhere to AP format, with simple font styles headings in H2, and body text in normal font. Write in an engaging, conversational style using idioms and varied sentence structures, incorporating over 30% transition words for readability. Add a block quote related to the {topic} if necessary.
 Start with a compelling introduction related to {topic} and use clear headings or bullet points if needed and ensure the article length adheres to the recommended character count for optimal engagement: {platform}: {character_limit}. 
@@ -53,42 +53,46 @@ Article Attributes. Bullet these:
     Citation links:
     """
 
-# platform_character_limits = {
-#     'LinkedIn': 2000,
-#     'Facebook': 1500,
-#     'Instagram': 1300,
-#     'X (Twitter)': 280,
-#     'Instagram Threads': 500
-# }
+def social_media_post(platform, character_limit, topic, keyword, company_name,hashtags):
+    return f"""
+Create a social media post for {platform} that highlights the significance of {topic} with a catchy, clickbait-style headline focusing on {keyword}. 
+The post should be engaging and conversational, using idioms and varied sentence structures with over 30% transition words for better readability. 
+Start with a compelling hook related to {topic} to grab attention and use clear, concise sentences, considering bullet points or short paragraphs for clarity. 
+Include a block quote related to {topic} if it adds value, and ensure the post strictly adheres to the character limit for optimal engagement: {platform}: {character_limit}. 
+Encourage readers to comment, share, or follow a link, and pose a question at the end to prompt discussion. Use strategic hashtags like {hashtags} to boost reach and engagement, and tag relevant organizations or individuals to increase visibility. 
+Write in a casual, friendly tone as if chatting with a friend at a coffee shop, avoiding formal or overly academic language. Be transparent and honest, clearly stating fictional examples when used. 
+Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], [Image 3], with descriptions of 10 words or less. 
+Generate a catchy, passive-voice footer inviting engagement, encouraging readers to share their thoughts and join the conversation using {hashtags}, and inform them about additional resources. 
+Avoid using words like "captivate," "tapestry," "delve," "foster," "endeavor," "embark," and "unleash."
+Use contractions, colloquialisms, and approachable language to make the post relatable and human, subtly mentioning our company, {company_name}, to reinforce our brand's presence and reliability without sounding biased. Give placholder for affliate link as well.
+Show the below attributes with the separation line.
+Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
+Add a title **Optimal Posting Days and Times (EST):** for this section.
+Make the Content 95 percent or greator human genereated.
+Show the below attributes with the separation line.
+Post Attributes. Bullet these:
+    Word Count
+    Character Count
+    Cost for the post
+    Keywords
+    SEO Seobility Score
+    Readability Score
+    Estimated Reading Time
+    Engagement
+    Call to Action
+    number of backlinks
+    Brand mention
+    sentiment
+    Citation links:
+"""
 
-# def generate_post(topic, platform):
-#     character_limit = platform_character_limits.get(platform, 500)  # Default to 500 if platform not found
-#     prompt = general_prompt(platform, character_limit)
-#     # Add code to generate the post using the prompt
-#     return prompt.format(Topic=topic)
-
-
-# #example usage
-# topic = "The importance of sustainable business practices"
-
-# linkedin_post = generate_linkedin_post(topic)
-# facebook_post = generate_facebook_post(topic)
-# instagram_post = generate_instagram_post(topic)
-# twitter_post = generate_twitter_post(topic)
-# threads_post = generate_threads_post(topic)
-
-# # Print or use the generated posts
-# print("LinkedIn Post:\n", linkedin_post)
-# print("Facebook Post:\n", facebook_post)
-# print("Instagram Post:\n", instagram_post)
-# print("Twitter Post:\n", twitter_post)
-# print("Threads Post:\n", threads_post)
-
-
-# # migrate the cost estimation logic to the main file
-# # Show the Estimated Cost per article below with a sepeartion line considering the input and output tokens.
-# # Writer AI Cost projection per article
-# # Total Output Token Count=  prompt_char_count + generated_char_count
-# # Input per token price: 7.50/1,000,000 = 0.0000075 per token
-# # Output per token price: 22.50/1,000,000=0.0000225 per token
-# # Cost of article: (Total Output Token Count * $30.00) / 1,000,000
+#Prompt for Newsletter
+def newsletter(character_limit, topic, keyword,company_name,hashtags):
+    return f"""
+Craft a newsletter for {company_name} that focuses on {topic} and grabs the reader's attention right from the start. 
+The content should be engaging, written in a human-like style, and formatted for easy readability. 
+Make sure to emphasize {keyword} and how it impacts. The narrative should be in passive voice, using catchy phrases that entice the reader to keep scrolling. 
+Include a clickbait-style call to action for affiliate links, making it irresistible for the audience to click. 
+Use {hashtags} strategically to boost social media engagement. The content must be within the {character_limit},
+with perfect grammar and smooth transitions, ensuring it feels naturally written and not entirely AI-generated.
+"""
