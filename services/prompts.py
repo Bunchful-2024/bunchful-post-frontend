@@ -90,25 +90,55 @@ Post Attributes. Bullet these:
 def newsletter(character_limit, topic, keyword,company_name,hashtags):
     return f"""
 Craft a newsletter for {company_name} that focuses on {topic} and grabs the reader's attention right from the start. 
-The content should be engaging, written in a human-like style, and formatted for easy readability. 
-Make sure to emphasize {keyword} and how it impacts. The narrative should be in passive voice, using catchy phrases that entice the reader to keep scrolling. 
-Include a clickbait-style call to action for affiliate links, making it irresistible for the audience to click. 
-Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], with descriptions of 10 words or less.
-Use {hashtags} strategically to boost social media engagement. The content must be within the {character_limit},
-with perfect grammar and smooth transitions, ensuring it feels naturally written and not entirely AI-generated.
+The content should be engaging, written in a human-like style, and formatted for easy readability. Emphasize {keyword} and its impact, using a narrative in passive voice with catchy phrases that keep the reader scrolling. 
+Personalize the newsletter with elements like the recipient's name or a tailored greeting. Include a clickbait-style call to action for affiliate links, making it irresistible for the audience to click. 
+Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], with descriptions of 10 words or less. 
+Use {hashtags} strategically to boost social media engagement. Ensure the content stays within the {character_limit}, with perfect grammar and smooth transitions, creating a natural flow that doesn't feel entirely AI-generated. 
+Incorporate a mix of content types such as short articles, bullet points, quotes, or testimonials to add variety and maintain interest. 
+Optimize the newsletter for mobile devices, ensuring a responsive design that looks good on smaller screens. 
+Include an attention-grabbing preview text that complements the subject line to entice readers to open the email.
+Track performance by adding UTM parameters to links, and consider scheduling the newsletter at an optimal time for maximum engagement based on your audiences behavior. 
+Add interactive elements like polls, quizzes, or embedded videos to engage the audience actively. 
+Incorporate social proof, such as testimonials, case studies, or user-generated content, to build trust and credibility.
+Maintain a good balance between text and visuals to avoid overwhelming the reader, and use whitespace effectively to enhance readability. 
+Ensure legal compliance by including necessary elements like an unsubscribe link and adherence to GDPR or other relevant email marketing regulations. 
+Conclude with a well-crafted footer that reinforces the newsletter's purpose and includes any necessary legal disclaimers or contact information.
+Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
+Add a title **Optimal Posting Days and Times (EST):** for this section.
+Make the Content 95 percent or greator human genereated.
+Show the below attributes with the separation line.
+Post Attributes. Bullet these:
+    Word Count
+    Character Count
+    Cost for the post
+    Keywords
+    SEO Seobility Score
+    Readability Score
+    Estimated Reading Time
+    Engagement
+    Call to Action
+    number of backlinks
+    Brand mention
+    sentiment
+    Citation links:
 """
 
 def listicles(platform, character_limit, topic, keyword,hashtags):
     return f"""
-Create a listicle for the {platform} with an eye-catching title that grabs attention, keeping it within {character_limit} character limit. 
-Start with a short introduction that sets up the {topic} and includes the keyword {keyword} to help with SEO search rankings. 
-Organize the list in a clear, logical order, using subheadings to make it easy to navigate. 
-For each item, provide a straightforward explanation and include the keyword {keyword} where it fits naturally. 
-Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], with descriptions of 10 words or less.
-Wrap things up with a summary or a call to action that reinforces the main points and invites readers to engage. 
-Conclude with a summary or a call to action that reinforces the main points and encourages reader interaction. 
-Ensure consistent formatting and check for grammar and spelling to keep the text polished.
-Use relevant {hashtags} to increase visibility and attract more readers.
+Create an SEO-focused listicle for {platform} that not only grabs attention but outshines the competition.
+Start by selecting highly relevant and targeted keywords for the {topic} that are ideal for listicle content, ensuring they resonate with your audience and boost search engine ranking. 
+Craft a compelling headline that includes the number of items, giving readers a clear idea of what to expect.
+Begin with a brief, engaging introduction that sets the context and naturally incorporates the keyword {keyword} to enhance visibility. 
+Organize the list with relevant and logically ordered items, using subheadings to make it easy to navigate. 
+For each item, provide in-depth content with actionable steps or detailed insights that offer real value to the reader. 
+Make sure the keyword {keyword} is smoothly integrated throughout the content to improve search rankings. 
+Go the extra mile by making your listicle more comprehensive and longer than competing articles. 
+Include all the extra details that make the content not only informative but also engaging and authoritative. 
+Design the listicle with a pro-level layout, ensuring its visually appealing and easy to read. 
+Add top-quality infographics and visuals like images or videos where appropriate, labeled as [Image 1], [Image 2], etc., with descriptions of 10 words or less to enhance engagement and make complex information easier to digest.
+Conclude with a summary or a strong call to action that reinforces the main points and encourages reader interaction. 
+Use relevant {hashtags} strategically to boost social media engagement and reach a wider audience. 
+Ensure the content stays within the {character_limit}, with perfect grammar, smooth transitions, and a professional finish that doesn't feel entirely AI-generated.
 
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
