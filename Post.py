@@ -1,7 +1,7 @@
 import json
 import requests
 import streamlit as st
-from content_generation import generate_article,generate_social_media_post, generate_newsletter_content
+from content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle
 from services.functions import transform_to_markdown, extract_title
 import google.generativeai as genai
 
@@ -54,7 +54,7 @@ st.session_state.hashtags = st.text_input("Enter your hashtags:")
 
 # Step 5: Select Content Type
 st.markdown("#### Step 5: Select Content Type")
-content_choices = ["Social Media Post", "Video Scripts", "Articles", "Blogs", "Ads", "Case Study", "Press Release", 
+content_choices = ["Social Media Post", "Video Scripts", "Articles", "Blogs", "Listicles", "Ads", "Case Study", "Press Release", 
                 "Emails - Promotional", "Emails - Cold", "Emails - Outbounds", "Emails - Warm", "Newsletters", "Welcome", "SMS Messages", "Job Posts"]
 st.session_state.content_type = st.selectbox("Select your content type:", content_choices, index=0)
 
@@ -65,6 +65,7 @@ content_to_platform = {
     "Video Scripts": ["Website", "Facebook", "Instagram", "YouTube", "TikTok", "Threads"],
     "Articles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
     "Blogs": ["Website", "Tumblr"],
+    "Listicles": ["Website", "Reddit", "Medium", "Hub Pages", "Vocal Media", "NewsBreak", "Steemit", "Ghost", "Write.as"],
     "Ads": ["Website", "Amazon", "Bing", "Google", "LinkedIn", "Facebook", "Instagram", "X (Twitter)", "Pinterest", "YouTube", "TikTok", "Threads"],
     "Case Study": [],
     "Press Release": [],
@@ -120,78 +121,25 @@ if generate_button:
     if not st.session_state.gemini_api_key:
         st.error("Please enter your Gemini API Key in the sidebar.")
     else:
-        genai.configure(api_key=st.session_state.gemini_api_key)  
+        genai.configure(api_key=st.session_state.gemini_api_key)
         model = genai.GenerativeModel('gemini-1.5-pro')
         try:
             if st.session_state.content_type == "Articles":
-                st.session_state.generated_response = generate_article()                
+                generate_article()                
             elif st.session_state.content_type == "Social Media Post":
-                st.session_state.generated_response = generate_social_media_post()
+                generate_social_media_post()
             elif st.session_state.content_type == "Newsletters":
-                st.session_state.generated_response = generate_newsletter_content()
- 
+                generate_newsletter_content()
+            elif st.session_state.content_type == "Listicles":
+                generate_listicle()
+            else:
+                st.error("Unsupported content type selected.")
         except AttributeError as e:
             st.error(f"An attribute error occurred: {e}")
+        except TypeError as e:
+            st.error(f"A type error occurred: {e}")
         except Exception as e:
             st.error(f"An error occurred: {e}")
-
-# # Display results
-# if st.session_state.generated_response:
-#     for platform in st.session_state.platforms:
-#         platform_dic = st.session_state.generated_response[platform]
-#         response_obj = platform_dic['response']
-#         # Accessing the content from the response object
-#         generated_result = response_obj.text
-#         st.session_state.generated_text = extract_generated_content(response_obj.text)
-#         st.session_state.image_captions = extract_image_captions(response_obj.text)
-#         print(generated_result) #for testing
-
-#         # Insert image links to the generated content
-#         # Adjust the regular expression to match the placeholders
-#         pattern = r'\[Image \d+: .*?\]'
-
-#         # Split the content by the placeholders
-#         parts = re.split(pattern, generated_result)
-
-#         # Find all placeholders
-#         placeholders = re.findall(pattern, generated_result)
-#         count = 0
-#         for image_caption in st.session_state.image_captions:
-#             try:
-#                 # Debug: Log the image caption being processed
-#                 image_result = pexels_api.search_image(image_caption, 1)[0]
-#                 print(image_result) #for testing
-#                 st.session_state.image_mapping[image_caption] = image_result
-#                 count+=1
-#             except Exception as e:
-#                 st.error(f"An error occurred while fetching images: {e}")
-
-#         st.markdown(f"### Generated Result for {platform}:")
-#         # st.write(generated_result)
-#         # Iterate over the parts and display text and images
-#         for i, part in enumerate(parts):
-#             st.write(part)
-#             if i < len(placeholders):
-#                 placeholder = placeholders[i]
-#                 description = placeholder[1:-1]  # Remove the square brackets
-#                 image_url = st.session_state.image_mapping.get(description)
-#                 if image_url:
-#                     st.image(image_url, caption=description, use_column_width=True)
-
-#         # Display character counts and cost projection
-#         st.markdown("Gemini Cost projection per article")
-#         st.write(f"Prompt Character Count: {platform_dic['prompt_char_count']}")
-#         st.write(f"Generated Content Character Count: {len(st.session_state.generated_text)}")
-#         # Define pricing for tokens
-#         input_token_rate = 0.000035  # Cost per input token
-#         output_token_rate = 0.000105  # Cost per output token
-
-#         # Calculate the estimated cost based on input and output tokens
-#         token_cost = (
-#             platform_dic['input_tokens'] * input_token_rate +
-#             platform_dic['output_tokens'] * output_token_rate
-#         )
-#         st.write(f"Estimated cost: ${token_cost:.6f}")
 
 #Editing Section
 if st.session_state.generated_text:

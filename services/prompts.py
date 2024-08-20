@@ -93,6 +93,36 @@ Craft a newsletter for {company_name} that focuses on {topic} and grabs the read
 The content should be engaging, written in a human-like style, and formatted for easy readability. 
 Make sure to emphasize {keyword} and how it impacts. The narrative should be in passive voice, using catchy phrases that entice the reader to keep scrolling. 
 Include a clickbait-style call to action for affiliate links, making it irresistible for the audience to click. 
+Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], with descriptions of 10 words or less.
 Use {hashtags} strategically to boost social media engagement. The content must be within the {character_limit},
 with perfect grammar and smooth transitions, ensuring it feels naturally written and not entirely AI-generated.
+"""
+
+def listicles(platform, character_limit, topic, keyword,hashtags):
+    return f"""
+Create a listicle for the {platform} with an eye-catching title that grabs attention, keeping it within {character_limit} character limit. 
+Start with a short introduction that sets up the {topic} and includes the keyword {keyword} to help with SEO search rankings. 
+Organize the list in a clear, logical order, using subheadings to make it easy to navigate. 
+For each item, provide a straightforward explanation and include the keyword {keyword} where it fits naturally. 
+Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], with descriptions of 10 words or less.
+Wrap things up with a summary or a call to action that reinforces the main points and invites readers to engage. 
+Conclude with a summary or a call to action that reinforces the main points and encourages reader interaction. 
+Ensure consistent formatting and check for grammar and spelling to keep the text polished.
+Use relevant {hashtags} to increase visibility and attract more readers.
+
+Show the below attributes with the separation line.
+Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
+Add a title **Optimal Posting Days and Times (EST):** for this section.
+Make the Content 95 percent or greator human genereated.
+Show the below attributes with the separation line.
+Post Attributes. Bullet these:
+    Word Count
+    Character Count
+    Keywords
+    Estimated Reading Time
+    Engagement
+    Call to Action
+    Number of backlinks
+    Brand mention
+    Citation links:
 """
