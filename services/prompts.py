@@ -92,17 +92,16 @@ def newsletter(character_limit, topic, keyword,company_name,hashtags):
 Craft a newsletter for {company_name} that focuses on {topic} and grabs the reader's attention right from the start. 
 The content should be engaging, written in a human-like style, and formatted for easy readability. Emphasize {keyword} and its impact, using a narrative in passive voice with catchy phrases that keep the reader scrolling. 
 Personalize the newsletter with elements like the recipient's name or a tailored greeting. Include a clickbait-style call to action for affiliate links, making it irresistible for the audience to click. 
-Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], with descriptions of 10 words or less. 
+Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], with descriptions of 10 words or less. 
 Use {hashtags} strategically to boost social media engagement. Ensure the content stays within the {character_limit}, with perfect grammar and smooth transitions, creating a natural flow that doesn't feel entirely AI-generated. 
-Incorporate a mix of content types such as short articles, bullet points, quotes, or testimonials to add variety and maintain interest. 
+Incorporate a mix of content types such as short articles, bullet points, quotes, to add variety and maintain interest. 
 Optimize the newsletter for mobile devices, ensuring a responsive design that looks good on smaller screens. 
-Include an attention-grabbing preview text that complements the subject line to entice readers to open the email.
-Track performance by adding UTM parameters to links, and consider scheduling the newsletter at an optimal time for maximum engagement based on your audiences behavior. 
+Include an attention-grabbing preview text that complements the subject line to entice readers to open the email. 
 Add interactive elements like polls, quizzes, or embedded videos to engage the audience actively. 
 Incorporate social proof, such as testimonials, case studies, or user-generated content, to build trust and credibility.
-Maintain a good balance between text and visuals to avoid overwhelming the reader, and use whitespace effectively to enhance readability. 
-Ensure legal compliance by including necessary elements like an unsubscribe link and adherence to GDPR or other relevant email marketing regulations. 
+Maintain a good balance between text and visuals to avoid overwhelming the reader, and use whitespace effectively to enhance readability.  
 Conclude with a well-crafted footer that reinforces the newsletter's purpose and includes any necessary legal disclaimers or contact information.
+
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Add a title **Optimal Posting Days and Times (EST):** for this section.
 Make the Content 95 percent or greator human genereated.
