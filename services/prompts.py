@@ -61,10 +61,11 @@ Start with a compelling hook related to {topic} to grab attention and use clear,
 Include a block quote related to {topic} if it adds value, and ensure the post strictly adheres to the character limit for optimal engagement: {platform}: {character_limit}. 
 Encourage readers to comment, share, or follow a link, and pose a question at the end to prompt discussion. Use strategic hashtags like {hashtags} to boost reach and engagement, and tag relevant organizations or individuals to increase visibility. 
 Write in a casual, friendly tone as if chatting with a friend at a coffee shop, avoiding formal or overly academic language. Be transparent and honest, clearly stating fictional examples when used. 
-Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], [Image 3], with descriptions of 10 words or less. 
 Generate a catchy, passive-voice footer inviting engagement, encouraging readers to share their thoughts and join the conversation using {hashtags}, and inform them about additional resources. 
 Avoid using words like "captivate," "tapestry," "delve," "foster," "endeavor," "embark," and "unleash."
 Use contractions, colloquialisms, and approachable language to make the post relatable and human, subtly mentioning our company, {company_name}, to reinforce our brand's presence and reliability without sounding biased. Give placholder for affliate link as well.
+Show the below attributes with the separation line.
+Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], [Image 3], with descriptions of 10 words or less.
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Add a title **Optimal Posting Days and Times (EST):** for this section.
