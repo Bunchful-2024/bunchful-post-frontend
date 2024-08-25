@@ -1,0 +1,24 @@
+import streamlit as st, requests, json
+
+class FacebookAPI:
+    def __init__(self, page_id, page_access_token):
+        self.api_key = page_id
+        self.page_access_token = page_access_token 
+        self.base_url = "https://graph.facebook.com/v20.0/"
+
+    def publish_post(self, message:str):
+        fb_api_url = f'https://graph.facebook.com/v20.0/{st.secrets["FACEBOOK_PAGE_ID"]}/feed'
+
+        payload = {
+            'message': message,
+            'access_token': self.page_access_token,
+        }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+
+        if response.status_code == 200:
+            st.success("Post published successfully on Facebook!")
+        else:
+            st.error(f"Failed to publish post")

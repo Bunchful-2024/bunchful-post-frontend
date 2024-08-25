@@ -3,6 +3,7 @@ import requests
 import streamlit as st
 from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results
 from services.functions import transform_to_markdown, extract_title
+from platforms.facebook import FacebookAPI
 import google.generativeai as genai
 
 # Initialize session state variables
@@ -210,26 +211,11 @@ if st.session_state.generated_text:
 
     elif st.session_state.platforms == ['Facebook']:
         publish_button = st.button("Publish")
+        FacebookAPI = FacebookAPI(st.secrets["FACEBOOK_PAGE_ID"], st.secrets["FACEBOOK_PAGE_ACCESS_TOKEN"])
         #publish content to FB page
         if publish_button:
             # Facebook API endpoint for posting to a page
-            fb_api_url = f'https://graph.facebook.com/v20.0/{st.secrets["FACEBOOK_PAGE_ID"]}/feed'
-
-            payload = {
-                'message': st.session_state.edited_text,
-                'access_token': st.secrets["FACEBOOK_PAGE_ACCESS_TOKEN"],
-                # 'access_token': fb_access_token cannot work why
-            }
-            headers = {
-                'Content-Type': 'application/json'
-            }
-
-            response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
-
-            if response.status_code == 200:
-                st.success("Post published successfully on Facebook!")
-            else:
-                st.error(f"Failed to publish post: {response.text}")
+            FacebookAPI.publish_post(st.session_state.edited_text)
 
 
 
