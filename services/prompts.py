@@ -66,7 +66,8 @@ Avoid using words like "captivate," "tapestry," "delve," "foster," "endeavor," "
 Use contractions, colloquialisms, and approachable language to make the post relatable and human, subtly mentioning our company, {company_name}, to reinforce our brand's presence and reliability without sounding biased. Give placholder for affliate link as well.
 Show the below attributes with the separation line.
 Add a title **Images:** for this section.
-Suggest correlating images for {topic} and {keyword}, labeled as [Image 1], [Image 2], [Image 3], with descriptions of 10 words or less.
+Suggest 3 image caption to the {topic} and {keyword}, marking like this [Image 1], [Image 2], [Image 3]
+The image caption should be 10 words or less, do not use symbols.
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Add a title **Optimal Posting Days and Times (EST):** for this section.

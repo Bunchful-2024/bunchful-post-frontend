@@ -94,6 +94,31 @@ def extract_image_captions(text):
     
     return image_captions
 
+#function to extract the image captions in social media post for Pexels retrieval
+def extract_social_media_image_captions(text):
+    lines = text.split('\n')
+    image_captions = []
+    capture_captions = False
+
+    for line in lines:
+        line = line.strip()
+        
+        # Start capturing captions after the "Images:" header
+        if line.startswith("## **Images:**"):
+            capture_captions = True
+            continue
+        
+        if capture_captions and line.startswith("**[Image"):
+            # Extract the caption text within the square brackets and colons
+            start = line.find(':') + 2  # Move to the start of the caption text after ": "
+            end = line.find('**', start)
+            if start != -1 and end != -1:
+                caption = line[start:end]
+                image_captions.append(caption)
+    
+    return image_captions
+
+
 def reset_session_state():
     for key in st.session_state.keys():
         del st.session_state[key]

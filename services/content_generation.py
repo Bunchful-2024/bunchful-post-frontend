@@ -3,7 +3,7 @@ import streamlit as st
 import google.generativeai as genai
 from services.prompts import article, social_media_post, newsletter, listicles  # Add listicles import
 from services.image_service import PexelsAPI
-from services.functions import extract_generated_content, extract_image_captions, extract_generated_social_media_content
+from services.functions import extract_generated_content, extract_image_captions, extract_generated_social_media_content, extract_social_media_image_captions
 
 pexels_api = PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
@@ -33,9 +33,10 @@ def generate_social_media_post():
         st.session_state.generated_response[platform]['prompt_char_count'] = len(prompt)
         response = model.generate_content(prompt)
         st.session_state.generated_response[platform]['response'] = response
+        print(response)
         st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
         st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
-        display_results(platform)
+        display_social_media_post_results(platform)
 
 def generate_newsletter_content():
     model = genai.GenerativeModel('gemini-1.5-pro')
@@ -118,7 +119,7 @@ def display_social_media_post_results(platform):
     response_obj = platform_dic['response']
     generated_result = response_obj.text
     st.session_state.generated_text = extract_generated_social_media_content(response_obj.text)
-    st.session_state.image_captions = extract_image_captions(response_obj.text)
+    st.session_state.image_captions = extract_social_media_image_captions(response_obj.text)
 
     pattern = r'\[Image \d+: .*?\]'
     parts = re.split(pattern, generated_result)
