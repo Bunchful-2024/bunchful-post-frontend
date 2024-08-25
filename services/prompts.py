@@ -64,6 +64,7 @@ Write in a casual, friendly tone as if chatting with a friend at a coffee shop, 
 Generate a catchy, passive-voice footer inviting engagement, encouraging readers to share their thoughts and join the conversation using {hashtags}, and inform them about additional resources. 
 Avoid using words like "captivate," "tapestry," "delve," "foster," "endeavor," "embark," and "unleash."
 Use contractions, colloquialisms, and approachable language to make the post relatable and human, subtly mentioning our company, {company_name}, to reinforce our brand's presence and reliability without sounding biased. Give placholder for affliate link as well.
+Do not include a headline and any text formatting for the post, only include plain text. 
 Show the below attributes with the separation line.
 Suggest 3 image descriptions based on the {topic} and {keyword} for retrieval, mark with bullet points like this 1. 2. 3.
 Each description should be 10 words or less, do not use symbols.
