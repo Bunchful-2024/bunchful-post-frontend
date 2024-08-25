@@ -1,7 +1,7 @@
 import json
 import requests
 import streamlit as st
-from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle
+from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results
 from services.functions import transform_to_markdown, extract_title
 import google.generativeai as genai
 
@@ -141,6 +141,15 @@ if generate_button:
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
+# Display the generated text
+if st.session_state.generated_text:
+    if st.session_state.content_type == "Social Media Post":
+        for platform in st.session_state.platforms:
+            display_social_media_post_results(platform)
+    else:
+        for platform in st.session_state.platforms:
+            display_results(platform)
+
 #Editing Section
 if st.session_state.generated_text:
 
@@ -207,18 +216,13 @@ if st.session_state.generated_text:
             fb_api_url = f'https://graph.facebook.com/v20.0/{st.secrets["FACEBOOK_PAGE_ID"]}/feed'
 
             payload = {
-                'message': st.session_state.generated_text,
-                'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
+                'message': st.session_state.edited_text,
+                'access_token': st.secrets["FACEBOOK_PAGE_ACCESS_TOKEN"],
                 # 'access_token': fb_access_token cannot work why
             }
             headers = {
                 'Content-Type': 'application/json'
             }
-
-            # Debugging: Use st.write to display the payload and URL
-            st.write("Facebook API URL:", fb_api_url)
-            st.write("Payload:", payload)
-            st.write("Headers:", headers)
 
             response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
 

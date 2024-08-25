@@ -20,7 +20,6 @@ def generate_article():
         st.session_state.generated_response[platform]['response'] = response
         st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
         st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
-        display_results(platform)
 
 def generate_social_media_post():
     model = genai.GenerativeModel('gemini-1.5-pro')
@@ -35,7 +34,6 @@ def generate_social_media_post():
         st.session_state.generated_response[platform]['response'] = response
         st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
         st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
-        display_social_media_post_results(platform)
 
 def generate_newsletter_content():
     model = genai.GenerativeModel('gemini-1.5-pro')
