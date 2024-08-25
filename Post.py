@@ -199,6 +199,35 @@ if st.session_state.generated_text:
                 else:
                     st.error(f"Failed to publish post: {response.text}")
 
+    elif st.session_state.platforms == ['Facebook']:
+        publish_button = st.button("Publish")
+        #publish content to FB page
+        if publish_button:
+            # Facebook API endpoint for posting to a page
+            fb_api_url = f'https://graph.facebook.com/v20.0/{st.secrets["FACEBOOK_PAGE_ID"]}/feed'
+
+            payload = {
+                'message': st.session_state.generated_text,
+                'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
+                # 'access_token': fb_access_token cannot work why
+            }
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            # Debugging: Use st.write to display the payload and URL
+            st.write("Facebook API URL:", fb_api_url)
+            st.write("Payload:", payload)
+            st.write("Headers:", headers)
+
+            response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
+
+            if response.status_code == 200:
+                st.success("Post published successfully on Facebook!")
+            else:
+                st.error(f"Failed to publish post: {response.text}")
+
+
 
 # Sidebar for guidance
 st.sidebar.title("Set up")
@@ -218,32 +247,4 @@ st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
 #             st.error(f"An error occurred while fetching images: {e}")
 
 
-    # if st.session_state.platforms == ['Facebook']:
-    #     st.subheader("Step 2: Publish to Facebook")
-    #     publish_button = st.button("Publish")
-    #     #publish content to FB page
-    #     if publish_button:
-    #         # Facebook API endpoint for posting to a page
-    #         fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
-
-    #         payload = {
-    #             'message': st.session_state.generated_text,
-    #             'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
-    #             # 'access_token': fb_access_token cannot work why
-    #         }
-    #         headers = {
-    #             'Content-Type': 'application/json'
-    #         }
-
-    #         # Debugging: Use st.write to display the payload and URL
-    #         st.write("Facebook API URL:", fb_api_url)
-    #         st.write("Payload:", payload)
-    #         st.write("Headers:", headers)
-
-    #         response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
-
-    #         if response.status_code == 200:
-    #             st.success("Post published successfully on Facebook!")
-    #         else:
-    #             st.error(f"Failed to publish post: {response.text}")
-
+    
