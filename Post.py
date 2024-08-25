@@ -1,7 +1,7 @@
 import json
 import requests
 import streamlit as st
-from content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle
+from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle
 from services.functions import transform_to_markdown, extract_title
 import google.generativeai as genai
 
