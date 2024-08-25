@@ -98,27 +98,27 @@ def extract_image_captions(text):
 def extract_social_media_image_captions(text):
     lines = text.split('\n')
     image_captions = []
-    capture_captions = False
+    is_images_section = False
 
     for line in lines:
         line = line.strip()
-        
-        # Start capturing captions after the "Images:" header
-        if line.startswith("## **Images:**"):
-            capture_captions = True
-            continue
-        
-        if capture_captions and line.startswith("**[Image"):
-            # Extract the caption text within the square brackets and colons
-            start = line.find(':') + 2  # Move to the start of the caption text after ": "
-            end = line.find('**', start)
-            if start != -1 and end != -1:
-                caption = line[start:end]
+
+        # Detect the start of the "Images:" section
+        if line.startswith("**Images:**"):
+            is_images_section = True
+            continue  # Skip this line, proceed to the next one
+
+        # If we are in the "Images:" section, extract captions
+        if is_images_section and line:
+            # Match both "* 1. Caption" and "1. Caption"
+            match = re.match(r'^(?:\*\s*)?\d+\.\s*(.*)', line)
+            if match:
+                caption = match.group(1).strip()
                 image_captions.append(caption)
     
     return image_captions
 
-
+#function to reset the session state
 def reset_session_state():
     for key in st.session_state.keys():
         del st.session_state[key]

@@ -33,7 +33,6 @@ def generate_social_media_post():
         st.session_state.generated_response[platform]['prompt_char_count'] = len(prompt)
         response = model.generate_content(prompt)
         st.session_state.generated_response[platform]['response'] = response
-        print(response)
         st.session_state.generated_response[platform]['input_tokens'] = response.usage_metadata.prompt_token_count
         st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
         display_social_media_post_results(platform)
@@ -118,12 +117,10 @@ def display_social_media_post_results(platform):
     platform_dic = st.session_state.generated_response[platform]
     response_obj = platform_dic['response']
     generated_result = response_obj.text
+    print(generated_result)
     st.session_state.generated_text = extract_generated_social_media_content(response_obj.text)
     st.session_state.image_captions = extract_social_media_image_captions(response_obj.text)
-
-    pattern = r'\[Image \d+: .*?\]'
-    parts = re.split(pattern, generated_result)
-    placeholders = re.findall(pattern, generated_result)
+    print(st.session_state.image_captions)
 
     for image_caption in st.session_state.image_captions:
         try:
@@ -133,14 +130,14 @@ def display_social_media_post_results(platform):
             st.error(f"An error occurred while fetching images: {e}")
 
     st.markdown(f"### Generated Result for {platform}:")
-    for i, part in enumerate(parts):
-        st.write(part)
-        if i < len(placeholders):
-            placeholder = placeholders[i]
-            description = placeholder[1:-1]
-            image_url = st.session_state.image_mapping.get(description)
+    st.write(st.session_state.generated_text)
+    # Display images below the content
+    if st.session_state.image_captions:
+        st.markdown("### Images:")
+        for image_caption in st.session_state.image_captions:
+            image_url = st.session_state.image_mapping.get(image_caption)
             if image_url:
-                st.image(image_url, caption=description, use_column_width=True)
+                st.image(image_url, caption=image_caption, use_column_width=True)
 
     st.markdown("### Gemini Cost Projection per Article/Post")
     st.write(f"Prompt Character Count: {platform_dic['prompt_char_count']}")
