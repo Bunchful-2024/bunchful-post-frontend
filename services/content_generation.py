@@ -120,7 +120,6 @@ def display_social_media_post_results(platform):
     print(generated_result)
     st.session_state.generated_text = extract_generated_social_media_content(response_obj.text)
     st.session_state.image_captions = extract_social_media_image_captions(response_obj.text)
-    print(st.session_state.image_captions)
 
     for image_caption in st.session_state.image_captions:
         try:
