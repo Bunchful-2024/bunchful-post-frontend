@@ -143,7 +143,7 @@ if generate_button:
             st.error(f"An error occurred: {e}")
 
 # Display the generated text
-if st.session_state.generated_text:
+if st.session_state.generated_response:
     if st.session_state.content_type == "Social Media Post":
         for platform in st.session_state.platforms:
             display_social_media_post_results(platform)
@@ -152,7 +152,7 @@ if st.session_state.generated_text:
             display_results(platform)
 
 #Editing Section
-if st.session_state.generated_text:
+if st.session_state.generated_response:
 
     st.markdown("### Edit Section")
     st.write("If you are modifying the image placment, please ensure you copy the whole image info in the format [Image X: Caption].")
