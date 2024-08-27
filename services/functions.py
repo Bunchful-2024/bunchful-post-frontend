@@ -35,7 +35,7 @@ def extract_generated_social_media_content(content):
         str: The extracted generated content before the "Images" section.
     """
     # Split the content by the "Images:" keyword
-    split_content = content.split("**Images:**", 1)
+    split_content = content.split("[Image]:", 1)
     
     # Return the content before the "Images" section if it exists
     if len(split_content) > 1:
@@ -96,25 +96,19 @@ def extract_image_captions(text):
 
 #function to extract the image captions in social media post for Pexels retrieval
 def extract_social_media_image_captions(text):
-    lines = text.split('\n')
-    image_captions = []
-    is_images_section = False
-
-    for line in lines:
-        line = line.strip()
-
-        # Detect the start of the "Images:" section
-        if line.startswith("**Images:**"):
-            is_images_section = True
-            continue  # Skip this line, proceed to the next one
-
-        # If we are in the "Images:" section, extract captions
-        if is_images_section and line:
-            # Match both "* 1. Caption" and "1. Caption"
-            match = re.match(r'^(?:\*\s*)?\d+\.\s*(.*)', line)
-            if match:
-                caption = match.group(1).strip()
-                image_captions.append(caption)
+    # Regex pattern to match the image caption section
+    pattern = r"\[Image\]\s*[:-]?\s*(.*)"
+    
+    # Search for the pattern in the post text
+    match = re.search(pattern, text)
+    
+    if match:
+        # Extract and return the caption, stripping off symbols
+        caption = match.group(1).strip()
+        cleaned_caption = re.sub(r'[^\w\s]', '', caption)  # Removes all non-alphanumeric characters except spaces
+        return cleaned_caption  # Extract and return the caption
+    else:
+        return None  # Return None if no caption is found
     
     return image_captions
 

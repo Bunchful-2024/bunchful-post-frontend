@@ -118,23 +118,21 @@ def display_social_media_post_results(platform):
     print(generated_result)
     st.session_state.generated_text = extract_generated_social_media_content(response_obj.text)
     st.session_state.image_captions = extract_social_media_image_captions(response_obj.text)
-
-    for image_caption in st.session_state.image_captions:
-        try:
-            image_result = pexels_api.search_image(image_caption, 1)[0]
-            st.session_state.image_mapping[image_caption] = image_result
-        except Exception as e:
-            st.error(f"An error occurred while fetching images: {e}")
+    print(st.session_state.image_captions)
+    try:
+        image_result = pexels_api.search_image(st.session_state.image_captions, 1)[0]
+        st.session_state.image_mapping[st.session_state.image_captions] = image_result
+    except Exception as e:
+        st.error(f"An error occurred while fetching images: {e}")
 
     st.markdown(f"### Generated Result for {platform}:")
     st.write(st.session_state.generated_text)
     # Display images below the content
     if st.session_state.image_captions:
-        st.markdown("### Images:")
-        for image_caption in st.session_state.image_captions:
-            image_url = st.session_state.image_mapping.get(image_caption)
-            if image_url:
-                st.image(image_url, caption=image_caption, use_column_width=True)
+        st.markdown("### Image:")
+        image_url = st.session_state.image_mapping.get(st.session_state.image_captions)
+        if image_url:
+            st.image(image_url, caption=st.session_state.image_captions, use_column_width=True)
 
     st.markdown("### Gemini Cost Projection per Article/Post")
     st.write(f"Prompt Character Count: {platform_dic['prompt_char_count']}")
