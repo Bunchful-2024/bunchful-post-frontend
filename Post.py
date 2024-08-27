@@ -221,10 +221,23 @@ if st.session_state.generated_response:
 
 
 # Sidebar for guidance
-st.sidebar.title("Set up")
-st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
-st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
-
+st.sidebar.title("Login Section")
+user = st.sidebar.radio(
+    "Select your user type:",
+    ["Bunchful", "Visitor"],
+)
+if user == "Visitor":
+    st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
+    st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
+elif user == "Bunchful":
+    # Password input field
+    password = st.sidebar.text_input("Enter your password", type="password")
+    if password == st.secrets["BUNCHFUL_PASSWORD"]:
+        st.session_state.gemini_api_key = st.secrets["BUNCHFUL_GEMINI_API_KEY"]
+        st.session_state.medium_token = st.secrets["BUNCHFUL_MEDIUM_TOKEN"]
+        st.sidebar.success("User authenticated")
+    else:
+        st.sidebar.error("Incorrect password")
 
 # Debug: Check if image captions are available
 # if st.session_state.image_captions:
