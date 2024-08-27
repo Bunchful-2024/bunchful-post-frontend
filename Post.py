@@ -1,8 +1,11 @@
 import json
 import requests
 import streamlit as st
-from content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle
+
+from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results
 from services.functions import transform_to_markdown, extract_title
+from platforms.facebook import FacebookAPI
+
 import google.generativeai as genai
 
 # Initialize session state variables
@@ -141,13 +144,26 @@ if generate_button:
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
+# Display the generated text
+if st.session_state.generated_response:
+    if st.session_state.content_type == "Social Media Post":
+        for platform in st.session_state.platforms:
+            display_social_media_post_results(platform)
+    else:
+        for platform in st.session_state.platforms:
+            display_results(platform)
+
 #Editing Section
-if st.session_state.generated_text:
+if st.session_state.generated_response:
 
     st.markdown("### Edit Section")
     st.write("If you are modifying the image placment, please ensure you copy the whole image info in the format [Image X: Caption].")
-    st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
-    st.session_state.edited_text = st.text_area("Edit your content:", value=st.session_state.generated_text, height=500)
+    if st.session_state.content_type == "Social Media Post":
+        st.session_state.edited_text = st.text_area("Edit your content:", value=st.session_state.generated_text, height=500)
+    else:
+        st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
+        st.session_state.edited_text = st.text_area("Edit your content:", value=st.session_state.generated_text, height=500)
+
     print(st.session_state.formatted_text) #for testing
 
     if st.session_state.platforms == ['Medium']:
@@ -196,12 +212,35 @@ if st.session_state.generated_text:
                 else:
                     st.error(f"Failed to publish post: {response.text}")
 
+    elif st.session_state.platforms == ['Facebook']:
+        publish_button = st.button("Publish")
+        FacebookAPI = FacebookAPI(st.secrets["FACEBOOK_PAGE_ID"], st.secrets["FACEBOOK_PAGE_ACCESS_TOKEN"])
+        #publish content to FB page
+        if publish_button:
+            # Facebook API endpoint for posting to a page
+            #FacebookAPI.publish_post(st.session_state.edited_text)
+            FacebookAPI.publish_post(st.session_state.edited_text,st.session_state.image_mapping.get(st.session_state.image_captions))
+
+
 
 # Sidebar for guidance
-st.sidebar.title("Set up")
-st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
-st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
-
+st.sidebar.title("Login Section")
+user = st.sidebar.radio(
+    "Select your user type:",
+    ["Bunchful", "Visitor"],
+)
+if user == "Visitor":
+    st.session_state.gemini_api_key = st.sidebar.text_input("Enter your Gemini API Key")
+    st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
+elif user == "Bunchful":
+    # Password input field
+    password = st.sidebar.text_input("Enter your password", type="password")
+    if password == st.secrets["BUNCHFUL_PASSWORD"]:
+        st.session_state.gemini_api_key = st.secrets["BUNCHFUL_GEMINI_API_KEY"]
+        st.session_state.medium_token = st.secrets["BUNCHFUL_MEDIUM_TOKEN"]
+        st.sidebar.success("User authenticated")
+    else:
+        st.sidebar.error("Incorrect password")
 
 # Debug: Check if image captions are available
 # if st.session_state.image_captions:
@@ -213,35 +252,3 @@ st.session_state.medium_token = st.sidebar.text_input("Enter your Medium Token")
 #             st.image(image_result, caption=image_caption, use_column_width=True)
 #         except Exception as e:
 #             st.error(f"An error occurred while fetching images: {e}")
-
-
-    # if st.session_state.platforms == ['Facebook']:
-    #     st.subheader("Step 2: Publish to Facebook")
-    #     publish_button = st.button("Publish")
-    #     #publish content to FB page
-    #     if publish_button:
-    #         # Facebook API endpoint for posting to a page
-    #         fb_api_url = f'https://graph.facebook.com/v20.0/{fb_page_id}/feed'
-
-    #         payload = {
-    #             'message': st.session_state.generated_text,
-    #             'access_token': "EAAHJqTXE0P4BO5tfCZCEMNJoV9zUHdZCZBN2OE2qtW73dTwL5hNlIrH4w0rLUl7jq4DK7dbAlx7kOfeJRGetUgZAJz6Gzja66g3YsNQe2b1gG9YQ1cZBtqFvvGZBsfUZCd1RnbwwuRSZC1ZC5ZCjLu7uAIhgAdlCl5ZA85R2PmXqHp1WViescdTEGaH5IoeZAhSBaMcJ0G5HlXy1S6xClwtryhx3IALTtfJQLpwDy8xZCa1cZD",
-    #             # 'access_token': fb_access_token cannot work why
-    #         }
-    #         headers = {
-    #             'Content-Type': 'application/json'
-    #         }
-
-    #         # Debugging: Use st.write to display the payload and URL
-    #         st.write("Facebook API URL:", fb_api_url)
-    #         st.write("Payload:", payload)
-    #         st.write("Headers:", headers)
-
-    #         response = requests.post(fb_api_url, headers=headers, data=json.dumps(payload))
-
-    #         if response.status_code == 200:
-    #             st.success("Post published successfully on Facebook!")
-    #         else:
-    #             st.error(f"Failed to publish post: {response.text}")
-
-

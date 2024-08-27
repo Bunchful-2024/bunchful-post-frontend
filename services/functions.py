@@ -23,6 +23,27 @@ def extract_generated_content(content):
         # Return the full content if "Images:" section is not found
         return content.strip()
     
+# function to extract the generated social media content from the output string
+def extract_generated_social_media_content(content):
+    """
+    Extract the generated content from the given content before the "Images" section.
+
+    Args:
+        content (str): The complete content including the "Images" section.
+
+    Returns:
+        str: The extracted generated content before the "Images" section.
+    """
+    # Split the content by the "Images:" keyword
+    split_content = content.split("[Image]", 1)
+    
+    # Return the content before the "Images" section if it exists
+    if len(split_content) > 1:
+        return split_content[0].strip()
+    else:
+        # Return the full content if "Images:" section is not found
+        return content.strip()
+    
 def transform_to_markdown(input_string):
     # Replace "##" with "#"
     transformed_string = input_string.replace("##", "#")
@@ -73,6 +94,25 @@ def extract_image_captions(text):
     
     return image_captions
 
+#function to extract the image captions in social media post for Pexels retrieval
+def extract_social_media_image_captions(text):
+    # Regex pattern to match the image caption section
+    pattern = r"\[Image\]\s*[:-]?\s*(.*)"
+    
+    # Search for the pattern in the post text
+    match = re.search(pattern, text)
+    
+    if match:
+        # Extract and return the caption, stripping off symbols
+        caption = match.group(1).strip()
+        cleaned_caption = re.sub(r'[^\w\s]', '', caption)  # Removes all non-alphanumeric characters except spaces
+        return cleaned_caption  # Extract and return the caption
+    else:
+        return None  # Return None if no caption is found
+    
+    return image_captions
+
+#function to reset the session state
 def reset_session_state():
     for key in st.session_state.keys():
         del st.session_state[key]
