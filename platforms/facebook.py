@@ -6,12 +6,13 @@ class FacebookAPI:
         self.page_access_token = page_access_token 
         self.base_url = "https://graph.facebook.com/v20.0/"
 
-    def publish_post(self, message:str):
+    def publish_post(self, message:str, image_url:str):
         fb_api_url = f'https://graph.facebook.com/v20.0/{self.page_id}/feed'
 
         payload = {
             'message': message,
             'access_token': self.page_access_token,
+            'url': image_url
         }
         headers = {
             'Content-Type': 'application/json'
