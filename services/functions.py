@@ -35,7 +35,7 @@ def extract_generated_social_media_content(content):
         str: The extracted generated content before the "Images" section.
     """
     # Split the content by the "Images:" keyword
-    split_content = content.split("[Image]:", 1)
+    split_content = content.split("[Image]", 1)
     
     # Return the content before the "Images" section if it exists
     if len(split_content) > 1:

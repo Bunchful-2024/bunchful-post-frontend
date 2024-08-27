@@ -7,7 +7,7 @@ class FacebookAPI:
         self.base_url = "https://graph.facebook.com/v20.0/"
 
     def publish_post(self, message:str, image_url:str):
-        fb_api_url = f'https://graph.facebook.com/v20.0/{self.page_id}/feed'
+        fb_api_url = f'https://graph.facebook.com/v20.0/{self.page_id}/photos'
 
         payload = {
             'message': message,

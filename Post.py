@@ -216,7 +216,7 @@ if st.session_state.generated_response:
         if publish_button:
             # Facebook API endpoint for posting to a page
             #FacebookAPI.publish_post(st.session_state.edited_text)
-            FacebookAPI.publish_post_with_photos(st.session_state.edited_text)
+            FacebookAPI.publish_post(st.session_state.edited_text,st.session_state.image_mapping.get(st.session_state.image_captions))
 
 
 
