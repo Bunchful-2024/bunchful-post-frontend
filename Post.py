@@ -1,9 +1,11 @@
 import json
 import requests
 import streamlit as st
+
 from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results
 from services.functions import transform_to_markdown, extract_title
 from platforms.facebook import FacebookAPI
+
 import google.generativeai as genai
 
 # Initialize session state variables
@@ -161,6 +163,7 @@ if st.session_state.generated_response:
     else:
         st.session_state.formatted_text = transform_to_markdown(st.session_state.generated_text)
         st.session_state.edited_text = st.text_area("Edit your content:", value=st.session_state.generated_text, height=500)
+
     print(st.session_state.formatted_text) #for testing
 
     if st.session_state.platforms == ['Medium']:
@@ -249,6 +252,3 @@ elif user == "Bunchful":
 #             st.image(image_result, caption=image_caption, use_column_width=True)
 #         except Exception as e:
 #             st.error(f"An error occurred while fetching images: {e}")
-
-
-    
