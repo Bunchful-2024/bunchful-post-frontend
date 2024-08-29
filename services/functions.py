@@ -84,7 +84,11 @@ def extract_image_captions(text):
 
     for line in lines:
         line = line.strip()
-        if line.startswith("[Image"):
+        # Check if the line contains a caption in either plain or bold format
+        if re.match(r"(\*\*)?\[Image.*\](\*\*)?", line):
+            # Remove bold formatting (**)
+            line = line.replace('**', '')
+
             # Extract the caption text within the square brackets
             start = line.find('[') + 1
             end = line.find(']')

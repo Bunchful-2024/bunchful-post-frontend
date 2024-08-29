@@ -8,7 +8,7 @@ from services.functions import extract_generated_content, extract_image_captions
 pexels_api = PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
 def generate_article():
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-1.5-pro')
     for platform in st.session_state.platforms:
         if platform not in st.session_state.generated_response:
             st.session_state.generated_response[platform] = {}
