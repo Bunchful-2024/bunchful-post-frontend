@@ -2,7 +2,7 @@ import json
 import requests
 import streamlit as st
 
-from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results
+from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results_with_image_option
 from services.functions import transform_to_markdown, extract_title
 from platforms.facebook import FacebookAPI
 
@@ -12,7 +12,7 @@ import google.generativeai as genai
 session_keys = [
     'content_type', 'platforms', 'generate_all', 'keyword', 'topic', 'company_name', 'hashtags',
     'char_limit', 'generated_text', 'formatted_text', 'edited_text',
-    'image_captions', 'image_mapping', 'parts', 'placeholders',
+    'image_captions', 'image_mapping', 'image_selected', 'parts', 'placeholders',
     'generated_response', 'medium_token', 'gemini_api_key'
 ]
 
@@ -21,6 +21,8 @@ for key in session_keys:
         if key in ['platforms', 'image_captions', 'parts', 'placeholders']:
             st.session_state[key] = []
         elif key == 'image_mapping':
+            st.session_state[key] = {}
+        elif key == 'image_selected':
             st.session_state[key] = {}
         elif key == 'generated_response':
             st.session_state[key] = {}
@@ -151,7 +153,7 @@ if st.session_state.generated_response:
             display_social_media_post_results(platform)
     else:
         for platform in st.session_state.platforms:
-            display_results(platform)
+            display_results_with_image_option(platform)
 
 #Editing Section
 if st.session_state.generated_response:
@@ -196,14 +198,6 @@ if st.session_state.generated_response:
                     "content": st.session_state.formatted_text,
                     "publishStatus": "public"
                 })
-
-                headers = {
-                    'Host': 'api.medium.com',
-                    'Authorization': f"Bearer {st.session_state.medium_token}",
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Accept-Charset': 'utf-8',
-                }
 
                 response = requests.post(medium_url, headers=headers, data=payload)
 

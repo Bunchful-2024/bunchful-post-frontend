@@ -54,7 +54,7 @@ def transform_to_markdown(input_string):
         full_caption = match.group(0).strip("[]")  # The entire match, including "Image X: Caption"
         caption = match.group(1)       # The actual caption text
         # Fetch the corresponding image link from the dictionary
-        image_link = st.session_state.image_mapping.get(full_caption, "Image Link")  # Default to "Image Link" if full_caption not found
+        image_link = st.session_state.image_selected.get(full_caption, "Image Link")  # Default to "Image Link" if full_caption not found
         return f"![{caption}]({image_link})"
     
     # Replace "[Image X: Caption]" with "![Caption](Image Link)"

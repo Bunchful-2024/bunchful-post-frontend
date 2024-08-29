@@ -32,3 +32,4 @@ class PexelsAPI:
             st.session_state[f"image_{index}"] = new_image_result
         except Exception as e:
             st.error(f"An error occurred while regenerating the image: {e}")
+            
