@@ -8,7 +8,7 @@ from services.functions import extract_generated_content, extract_image_captions
 pexels_api = PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
 def generate_article():
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     for platform in st.session_state.platforms:
         if platform not in st.session_state.generated_response:
             st.session_state.generated_response[platform] = {}
@@ -22,7 +22,7 @@ def generate_article():
         st.session_state.generated_response[platform]['output_tokens'] = response.usage_metadata.candidates_token_count
 
 def generate_social_media_post():
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     for platform in st.session_state.platforms:
         if platform not in st.session_state.generated_response:
             st.session_state.generated_response[platform] = {}
@@ -81,7 +81,7 @@ def display_results(platform):
     pattern = r'\[Image \d+: .*?\]'
     parts = re.split(pattern, generated_result)
     placeholders = re.findall(pattern, generated_result)
-
+    st.session_state.image_mapping = {} #reset image mapping
     for image_caption in st.session_state.image_captions:
         try:
             image_result = pexels_api.search_image(image_caption, 1)[0]

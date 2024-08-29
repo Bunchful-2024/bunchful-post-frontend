@@ -127,7 +127,6 @@ if generate_button:
         st.error("Please enter your Gemini API Key in the sidebar.")
     else:
         genai.configure(api_key=st.session_state.gemini_api_key)
-        model = genai.GenerativeModel('gemini-1.5-pro')
         try:
             if st.session_state.content_type == "Articles":
                 generate_article()                
@@ -187,17 +186,26 @@ if st.session_state.generated_response:
                 }
 
                 response = requests.request("GET", "https://api.medium.com/v1/me", headers=headers, data=payload)
+                response.raise_for_status()
                 author_id = response.json()['data']['id']
 
                 # Medium API endpoint for posting
                 medium_url = f"https://api.medium.com/v1/users/{author_id}/posts"
 
-                payload = json.dumps({
+                payload = {
                     "title": extract_title(st.session_state.formatted_text),
                     "contentFormat": "markdown",
                     "content": st.session_state.formatted_text,
                     "publishStatus": "public"
-                })
+                }
+
+                headers = {
+                    'Host': 'api.medium.com',
+                    'Authorization': f"Bearer {st.session_state.medium_token}",
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Accept-Charset': 'utf-8',
+                }
 
                 response = requests.post(medium_url, headers=headers, data=payload)
 
