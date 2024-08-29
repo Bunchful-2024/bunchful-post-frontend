@@ -154,6 +154,7 @@ if st.session_state.generated_response:
         for platform in st.session_state.platforms:
             display_results_with_image_option(platform)
 
+
 #Editing Section
 if st.session_state.generated_response:
 
@@ -192,12 +193,12 @@ if st.session_state.generated_response:
                 # Medium API endpoint for posting
                 medium_url = f"https://api.medium.com/v1/users/{author_id}/posts"
 
-                payload = {
+                payload = json.dumps({
                     "title": extract_title(st.session_state.formatted_text),
                     "contentFormat": "markdown",
                     "content": st.session_state.formatted_text,
                     "publishStatus": "public"
-                }
+                })
 
                 headers = {
                     'Host': 'api.medium.com',
