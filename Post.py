@@ -2,7 +2,7 @@ import json
 import requests
 import streamlit as st
 
-from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results
+from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results_with_image_option
 from services.functions import transform_to_markdown, extract_title
 from platforms.facebook import FacebookAPI
 
@@ -12,7 +12,7 @@ import google.generativeai as genai
 session_keys = [
     'content_type', 'platforms', 'generate_all', 'keyword', 'topic', 'company_name', 'hashtags',
     'char_limit', 'generated_text', 'formatted_text', 'edited_text',
-    'image_captions', 'image_mapping', 'parts', 'placeholders',
+    'image_captions', 'image_mapping', 'image_selected', 'parts', 'placeholders',
     'generated_response', 'medium_token', 'gemini_api_key'
 ]
 
@@ -21,6 +21,8 @@ for key in session_keys:
         if key in ['platforms', 'image_captions', 'parts', 'placeholders']:
             st.session_state[key] = []
         elif key == 'image_mapping':
+            st.session_state[key] = {}
+        elif key == 'image_selected':
             st.session_state[key] = {}
         elif key == 'generated_response':
             st.session_state[key] = {}
@@ -125,7 +127,6 @@ if generate_button:
         st.error("Please enter your Gemini API Key in the sidebar.")
     else:
         genai.configure(api_key=st.session_state.gemini_api_key)
-        model = genai.GenerativeModel('gemini-1.5-pro')
         try:
             if st.session_state.content_type == "Articles":
                 generate_article()                
@@ -151,7 +152,8 @@ if st.session_state.generated_response:
             display_social_media_post_results(platform)
     else:
         for platform in st.session_state.platforms:
-            display_results(platform)
+            display_results_with_image_option(platform)
+
 
 #Editing Section
 if st.session_state.generated_response:
@@ -185,6 +187,7 @@ if st.session_state.generated_response:
                 }
 
                 response = requests.request("GET", "https://api.medium.com/v1/me", headers=headers, data=payload)
+                response.raise_for_status()
                 author_id = response.json()['data']['id']
 
                 # Medium API endpoint for posting

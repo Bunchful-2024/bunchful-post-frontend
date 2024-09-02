@@ -54,7 +54,7 @@ def transform_to_markdown(input_string):
         full_caption = match.group(0).strip("[]")  # The entire match, including "Image X: Caption"
         caption = match.group(1)       # The actual caption text
         # Fetch the corresponding image link from the dictionary
-        image_link = st.session_state.image_mapping.get(full_caption, "Image Link")  # Default to "Image Link" if full_caption not found
+        image_link = st.session_state.image_selected.get(full_caption, "Image Link")  # Default to "Image Link" if full_caption not found
         return f"![{caption}]({image_link})"
     
     # Replace "[Image X: Caption]" with "![Caption](Image Link)"
@@ -84,7 +84,11 @@ def extract_image_captions(text):
 
     for line in lines:
         line = line.strip()
-        if line.startswith("[Image"):
+        # Check if the line contains a caption in either plain or bold format
+        if re.match(r"(\*\*)?\[Image.*\](\*\*)?", line):
+            # Remove bold formatting (**)
+            line = line.replace('**', '')
+
             # Extract the caption text within the square brackets
             start = line.find('[') + 1
             end = line.find(']')

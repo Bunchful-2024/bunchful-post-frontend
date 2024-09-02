@@ -23,3 +23,4 @@ class FacebookAPI:
             st.success("Post published successfully on Facebook!")
         else:
             st.error(f"Failed to publish post")
+
