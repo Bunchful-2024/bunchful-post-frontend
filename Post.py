@@ -5,6 +5,7 @@ import streamlit as st
 from services.content_generation import generate_article,generate_social_media_post, generate_newsletter_content, generate_listicle, display_social_media_post_results, display_results_with_image_option
 from services.functions import transform_to_markdown, extract_title
 from platforms.facebook import FacebookAPI
+from platforms.medium import MediumAPI
 
 import google.generativeai as genai
 
@@ -177,43 +178,12 @@ if st.session_state.generated_response:
             else:
                 # transform the final text into markdown format
                 st.session_state.formatted_text = transform_to_markdown(st.session_state.edited_text)
+                # set up Medium API
+                MediumAPI = MediumAPI(st.session_state.medium_token)
                 # get Medium author ID
-                payload = {}
-                headers = {
-                    'Host': 'api.medium.com',
-                    'Authorization': f"Bearer {st.session_state.medium_token}",
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                }
-
-                response = requests.request("GET", "https://api.medium.com/v1/me", headers=headers, data=payload)
-                response.raise_for_status()
-                author_id = response.json()['data']['id']
-
-                # Medium API endpoint for posting
-                medium_url = f"https://api.medium.com/v1/users/{author_id}/posts"
-
-                payload = json.dumps({
-                    "title": extract_title(st.session_state.formatted_text),
-                    "contentFormat": "markdown",
-                    "content": st.session_state.formatted_text,
-                    "publishStatus": "public"
-                })
-
-                headers = {
-                    'Host': 'api.medium.com',
-                    'Authorization': f"Bearer {st.session_state.medium_token}",
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Accept-Charset': 'utf-8',
-                }
-
-                response = requests.post(medium_url, headers=headers, data=payload)
-
-                if response.status_code == 201:
-                    st.success("Post published successfully on Medium!")
-                else:
-                    st.error(f"Failed to publish post: {response.text}")
+                MediumAPI.get_author_id()
+                # publish content to Medium, has to specify the title
+                MediumAPI.publish_post(st.session_state.formatted_text, extract_title(st.session_state.formatted_text))
 
     elif st.session_state.platforms == ['Facebook']:
         publish_button = st.button("Publish")
