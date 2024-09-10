@@ -8,7 +8,7 @@ from services.functions import extract_generated_content, extract_image_captions
 pexels_api = PexelsAPI(st.secrets["PEXELS_API_KEY"])
 
 def generate_article():
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     for platform in st.session_state.platforms:
         if platform not in st.session_state.generated_response:
             st.session_state.generated_response[platform] = {}
@@ -23,7 +23,7 @@ def generate_article():
         display_results(platform)
 
 def generate_social_media_post():
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     for platform in st.session_state.platforms:
         if platform not in st.session_state.generated_response:
             st.session_state.generated_response[platform] = {}
@@ -38,7 +38,7 @@ def generate_social_media_post():
         display_results(platform)
 
 def generate_newsletter_content():
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     prompt = newsletter(
         st.session_state.topic, 
         st.session_state.keyword, 
@@ -58,7 +58,7 @@ def generate_newsletter_content():
     display_newsletter_results()
 
 def generate_listicle():
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     for platform in st.session_state.platforms:
         if platform not in st.session_state.generated_response:
             st.session_state.generated_response[platform] = {}
