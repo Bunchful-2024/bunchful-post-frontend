@@ -16,9 +16,6 @@ Please generate text that avoids using formal or overly academic phrases such as
 
 Aim for a natural, conversational style that sounds like two friends talking at the coffee shop. Use direct, simple language and choose phrases that are commonly used in everyday speech. 
 If a formal phrase is necessary for clarity or accuracy, you may include it, but otherwise, please prioritize making the text engaging, clear, and relatable. 
-
-To make the content appear less AI-generated and more humanized, it should be rewritten in a way that avoids repetitive language. Synonyms should be used instead of repeating words.
-
 Generate a catchy footer in passive voice that encourages engagement and conversation. Include a call to action for readers to share their thoughts in the comments and spread the word. Mention using the {hashtags} to join the conversation and inform readers for more resources. 
 Avoid these words: Captivate, Tapestry, Delve, Foster, Endeavor, Embark, Unleash.
 
@@ -31,7 +28,6 @@ Transparency is key here—ensure that these hypothetical situations are present
 The introduction of the article should identify the problem the buyer has and contextualize who they are. 
 It should also outline what the reader will get and learn from reading the post, and the payoff that will come with completing the content.
 Vary the length of the paragraphs and sentences in these writings. Look for opportunities to create punchy, incisive moments to land your points, while at other times produce paragraphs that are 2-4 sentences as needed.
-
 Correlate 3 images to the {topic} and {keyword} with article content, marking the images like this format [Image index: image description] for example [Image 1: Children playing in the playground],
 The image description should be 10 words or less, do not use symbols. 
 Dont start with common words such as "Lets Face it, etc"
