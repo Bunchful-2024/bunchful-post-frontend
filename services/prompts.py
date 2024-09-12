@@ -17,6 +17,8 @@ Please generate text that avoids using formal or overly academic phrases such as
 Aim for a natural, conversational style that sounds like two friends talking at the coffee shop. Use direct, simple language and choose phrases that are commonly used in everyday speech. 
 If a formal phrase is necessary for clarity or accuracy, you may include it, but otherwise, please prioritize making the text engaging, clear, and relatable. 
 
+To make the content appear less AI-generated and more humanized, it should be rewritten in a way that avoids repetitive language. Synonyms should be used instead of repeating words.
+
 Generate a catchy footer in passive voice that encourages engagement and conversation. Include a call to action for readers to share their thoughts in the comments and spread the word. Mention using the {hashtags} to join the conversation and inform readers for more resources. 
 Avoid these words: Captivate, Tapestry, Delve, Foster, Endeavor, Embark, Unleash.
 
@@ -32,7 +34,7 @@ Vary the length of the paragraphs and sentences in these writings. Look for oppo
 
 Correlate 3 images to the {topic} and {keyword} with article content, marking the images like this format [Image index: image description] for example [Image 1: Children playing in the playground],
 The image description should be 10 words or less, do not use symbols. 
-
+Dont start with common words such as "Lets Face it, etc"
 
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
@@ -64,12 +66,16 @@ Include a block quote related to {topic} if it adds value, and ensure the post s
 Encourage readers to comment, share, or follow a link, and pose a question at the end to prompt discussion. Use strategic hashtags like {hashtags} to boost reach and engagement, and tag relevant organizations or individuals to increase visibility. 
 Write in a casual, friendly tone as if chatting with a friend at a coffee shop, avoiding formal or overly academic language. Be transparent and honest, clearly stating fictional examples when used. 
 Generate a catchy, passive-voice footer inviting engagement, encouraging readers to share their thoughts and join the conversation using {hashtags}, and inform them about additional resources. 
+
+To make the content appear less AI-generated and more humanized, it should be rewritten in a way that avoids repetitive language. Synonyms should be used instead of repeating words.
 Avoid using words like "captivate," "tapestry," "delve," "foster," "endeavor," "embark," and "unleash."
 Use contractions, colloquialisms, and approachable language to make the post relatable and human, subtly mentioning our company, {company_name}, to reinforce our brand's presence and reliability without sounding biased. Give placholder for affliate link as well.
 Do not include a headline and any text formatting for the post, only include plain text. 
 Show the below attributes with the separation line.
 Suggest one image description based on the {topic} and {keyword} for retrieval, mark it like this [Image].
 The description should be 10 words or less, do not use symbols.
+Dont start with common words such as "Lets Face it, etc"
+
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Add a title **Optimal Posting Days and Times (EST):** for this section.
@@ -106,6 +112,8 @@ Add interactive elements like polls, quizzes, or embedded videos to engage the a
 Incorporate social proof, such as testimonials, case studies, or user-generated content, to build trust and credibility.
 Maintain a good balance between text and visuals to avoid overwhelming the reader, and use whitespace effectively to enhance readability.  
 Conclude with a well-crafted footer that reinforces the newsletter's purpose and includes any necessary legal disclaimers or contact information.
+To make the content appear less AI-generated and more humanized, it should be rewritten in a way that avoids repetitive language. Synonyms should be used instead of repeating words.
+Dont start with common words such as "Lets Face it, etc"
 
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
 Add a title **Optimal Posting Days and Times (EST):** for this section.
@@ -143,6 +151,8 @@ Add top-quality infographics and visuals like images or videos where appropriate
 Conclude with a summary or a strong call to action that reinforces the main points and encourages reader interaction. 
 Use relevant {hashtags} strategically to boost social media engagement and reach a wider audience. 
 Ensure the content stays within the {character_limit}, with perfect grammar, smooth transitions, and a professional finish that doesn't feel entirely AI-generated.
+To make the content appear less AI-generated and more humanized, it should be rewritten in a way that avoids repetitive language. Synonyms should be used instead of repeating words.
+Dont start with common words such as "Lets Face it"
 
 Show the below attributes with the separation line.
 Show 7 optimal posting days and times with EST time zone based on the highest engagement activity.
