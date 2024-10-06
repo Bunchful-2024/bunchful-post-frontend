@@ -1,52 +1,43 @@
 # Bunchful Post
-- Author: Stephanie Chen  
-- Date: 07/03/2024 last update
-- Reference: [Writing Design Doc](https://medium.com/machine-words/writing-technical-design-docs-71f446e42f2e), [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/#apis)
+🙌 [Bunchful Post on Streamlit Cloud](https://bunchful-post.streamlit.app)<br>
+- Project documentatoin by Stephanie and Deep
+- Date: 09/02/2024 last update
 
-# Introduction 
-## Rationale  
-As Bunchful expands its content platform presence, managing posts becomes challenging due to the manual, repetitive process required for each platform. Tailoring content to each platform's unique style is also time-consuming, reducing productivity and limiting audience engagement. While there are existing social media management tools, they couldn't fulfill the needs of Bunchful as most of them focus on popular platforms like Facebook, Instagram, etc. Thus, the team is building a tool for Bunchful to manage its content over 19 platforms.  
-## Non-goals
-1. This project doesn't include the following functions: Post Scheduling, Performance Analytics.
-2. This project at the current stage aims to integrate 4-5 social media platforms, gradually increasing the amount.
+# 0. Overview 
 
-# Proposed Design  
-## Overview
-Bunchful Post is an AI-powered web application that assists in content management.  
-It has two main functions: Content Curation and Automated Posting.  
-- Content Curation: Leverages ChatGPT to compose tailored content for various platforms. It assists in crafting customized content style for each platform, such as social media posts, articles, blogs, and newsletters.  
-- Automated Posting: Users can seamlessly upload posts to platforms like Facebook and LinkedIn with a single click. It eliminates the need for manual uploading, saving time and effort. 
-## System Architecture
-### 1. Client Layer:
-  - Web Interface
-### 2. Application Layer:
-  - AI Integration (ChatGPT)
-  - Automation Engine
-  - API Gateway
-### 3. Integration Layer:
-  - Third-Party API Integrations (Social Media, Analytics)
-  - Authentication Services
-### 4. Infrastructure Layer:
-  - Hosting (Cloud Services)
+Bunchful Post is an AI-powered web application that assists in content management over several platforms. The app not only increases work efficiency for Bunchful Team but also serves as an important tool in creating potential revenue for Bunchful.
 
-## Implementation
-### 1. Backend Development: 
-- Set up the backend using Flask. 
-- Integrate OpenAI’s API for content generation. 
-- Integrate social media third-party APIs. 
- 
-### 2. Frontend Development: 
-- Design UI in Figma. 
-- Develop the frontend using Streamlit. 
- 
-### 3. Deployment:
-- Deploy the web app on Render cloud services. 
+# 1. Rationale 
+As Bunchful expands its content platform presence, managing posts becomes challenging due to the manual, repetitive process required for each platform. Tailoring content to each platform's unique style is also time-consuming, reducing productivity and limiting audience engagement. 
 
-# Impact
+While there are existing tools, they couldn't fulfill Bunchful's need to focus on article platforms such as Medium, Hub Pages, etc. 
+
+# 2. Functions
+## 2.1 Functions Overview
+Bunchful Post is an AI-powered web application that assists in content management. It has two main functions: Content Generation and Automated Posting.  
+- Content Curation: Leverages Gemini to compose tailored content for various content types. Considering diverse target audiences, it assists in crafting customized content, such as social media posts, articles, blogs, and newsletters.  
+- Automated Posting: After generating content, users can directly publish the content to the platforms with a single click. It eliminates the need for manual uploading, saving time and effort. 
+
+## 2.2 Non-goals
+- This project doesn't support the following functions: Posting to Multiple Platforms at once, Post Scheduling, and Performance Analytics.
+
+- This project currently supports posting on Medium and Facebook, gradually increasing the amount of platforms.
+
+# 3. Tech Stack
+Bunchful Post is developed and deployed in Streamlit. We selected Streamlit for the framework as it works well with LLMs. It's also easy to pick up and suitable for fast iteration. Furthermore, Streamlit Cloud offers a free deployment plan.
+- Website: Python Streamlit
+- Third-party APIs
+  - Platform: Medium, Facebook
+  - Image Retrievals: Pexels
+  - LLMs: Gemini
+- Tools:
+  - Deployment: Streamlit Cloud 
+  - Version control: Git/GitHub
+  - Project Management: Jira
+
+# 4. Impact
 Bunchful Post not only increases work efficiency, but also plays an important role in creating potential revenue for Bunchful. 
  
 - Increase work efficiency: Automating posting tasks saves time and effort, improving productivity. 
-Engage with diverse audiences: Tailored content enables us to engage with different audiences better. It helps foster stronger connections across various social media channels. 
-- Create potential revenue: Improved content management and audience engagement increase visibility, leading to more monetization opportunities.
-
-# Alternatives
+- Engage with diverse audiences: Tailored content enables the team to engage with different audiences better. It helps foster stronger connections across various social media channels. 
+- Create potential revenue: Improved content management and audience engagement increase visibility, leading to more monetization opportunities such as affiliate marketing.
